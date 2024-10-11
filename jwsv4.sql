@@ -1528,21 +1528,23 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listarcobranza`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listarCobranza`()
 BEGIN
-SELECT 
-    idcobranza,
-    CO.idcliente,
-    CL.nombre_cliente,
-    fecha_emision,
-    fecha_vencimiento,
-    monto,
-    moneda,
-    estadocobranza    
-FROM
-    cobranza AS CO
-        INNER JOIN
-    cliente AS CL ON CO.idcliente = CL.idcliente;
+    SELECT 
+        CO.idcobranza,
+        CO.idcliente,
+        CL.nombre_cliente,
+        CO.fecha_emision,
+        CO.fecha_vencimiento,
+        CO.monto,
+        CO.moneda,
+        CO.documento,
+        CO.observacion,
+        CO.recurrente,
+        CO.estadocobranza
+    FROM
+        cobranza AS CO
+        INNER JOIN cliente AS CL ON CO.idcliente = CL.idcliente;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
