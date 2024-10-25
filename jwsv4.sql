@@ -367,7 +367,7 @@ CREATE TABLE `trabajador` (
 
 LOCK TABLES `trabajador` WRITE;
 /*!40000 ALTER TABLE `trabajador` DISABLE KEYS */;
-INSERT INTO `trabajador` VALUES (2,1,'Diego Merino','inge@gmail.com','dmerino','$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO',3000.00),(4,2,'Cecilion','cecilion@gmail.com','cecilion24','123456',3000.00),(6,2,'Lemilion','cecilion@gmail.com','Lemilion24','123456',3000.00),(11,3,'Ingeniero primero','ingernieroprimero@gmail.com','inge12','123456',3000.00),(12,4,'Pedro','cecilion@gmail.com','Pedro2000','123456',3000.00),(13,4,'Natalia','natalia@gmail.com','natalia24','123456',2500.00),(14,4,'baxia','baxia@gmail.com','baxia33','$2y$10$B.R5Ff7fQMo6C50dTsdMeeNThGxEMLQyRBkEGN2FtgN5KERtio3A.',2500.00),(15,4,'layla Kanz','baxia@gmail.com','layla22','$2y$10$HxXB4C.fUP.aUxc3UwkVee2C7Qn0XBaNQiLv/HbZLEE3TrkhNFahO',2500.00);
+INSERT INTO `trabajador` VALUES (2,1,'Diego Merino','inge@gmail.com','dmerino','$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO',3000.00),insert into trabajador values (20, 1, "admin", "admin@gmail.com", "admin", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000),insert into trabajador values (21, 2, "vendedor", "vendedor@gmail.com", "vendedor", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000),insert into trabajador values (22, 3, "trabajador", "trabajador@gmail.com", "trabajador", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000),insert into trabajador values (23, 4, "desarrollador", "desarrollador@gmail.com", "desarrollador", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000);
 /*!40000 ALTER TABLE `trabajador` ENABLE KEYS */;
 UNLOCK TABLES;
 
