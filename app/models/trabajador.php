@@ -10,11 +10,12 @@ class trabajador
     public $UsuarioTrabajador;
     public $ClaveTrabajador;
     public $SueldoTrabajador;
+    public $SueldoExtraTrabajador;
     public $tokenVerificador;
     public $token;
     private $conexion;
 
-    function __construct($CodigoTrabajador, $CodigoRol, $NombreTrabajador, $CorreoTrabajador, $UsuarioTrabajador, $ClaveTrabajador, $SueldoTrabajador, $tokenVerificador, $iniciarBD = true)
+    function __construct($CodigoTrabajador, $CodigoRol, $NombreTrabajador, $CorreoTrabajador, $UsuarioTrabajador, $ClaveTrabajador, $SueldoTrabajador, $SueldoExtraTrabajador, $tokenVerificador, $iniciarBD = true)
     {
         $this->CodigoTrabajador = $CodigoTrabajador;
         $this->CodigoRol = $CodigoRol;
@@ -23,6 +24,7 @@ class trabajador
         $this->UsuarioTrabajador = $UsuarioTrabajador;
         $this->ClaveTrabajador = $ClaveTrabajador;
         $this->SueldoTrabajador = $SueldoTrabajador;
+        $this->SueldoExtraTrabajador = $SueldoExtraTrabajador;
         $this->tokenVerificador = $tokenVerificador;
         if ($iniciarBD) {
             $this->conexion = new conexion();
@@ -45,6 +47,7 @@ class trabajador
                 $datos["usuario_trabajador"],
                 $datos["clave_trabajador"],
                 $datos["sueldo_trabajador"],
+                $datos["sueldo_extra"],
                 "",
                 false
             );
@@ -61,9 +64,10 @@ class trabajador
             $UsuarioTrabajador = $this->UsuarioTrabajador;
             $ClaveTrabajador = $this->ClaveTrabajador;
             $SueldoTrabajador = $this->SueldoTrabajador;
-            $sql = "CALL crearTrabajador(?, ?, ?, ?, ?, ?);";
+            $SueldoExtraTrabajador = $this->SueldoExtraTrabajador;
+            $sql = "CALL crearTrabajador(?, ?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoRol, $NombreTrabajador, $CorreoTrabajador, $UsuarioTrabajador, $ClaveTrabajador, $SueldoTrabajador]);
+            $stmt->execute([$CodigoRol, $NombreTrabajador, $CorreoTrabajador, $UsuarioTrabajador, $ClaveTrabajador, $SueldoTrabajador, $SueldoExtraTrabajador]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -100,9 +104,10 @@ class trabajador
             $UsuarioTrabajador = $this->UsuarioTrabajador;
             $ClaveTrabajador = $this->ClaveTrabajador;
             $SueldoTrabajador = $this->SueldoTrabajador;
-            $sql = "CALL actualizarTrabajador(?, ?, ?, ?, ?, ?, ?);";
+            $SueldoExtraTrabajador = $this->SueldoExtraTrabajador;
+            $sql = "CALL actualizarTrabajador(?, ?, ?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoTrabajador, $CodigoRol, $NombreTrabajador, $CorreoTrabajador, $UsuarioTrabajador, $ClaveTrabajador, $SueldoTrabajador]);
+            $stmt->execute([$CodigoTrabajador, $CodigoRol, $NombreTrabajador, $CorreoTrabajador, $UsuarioTrabajador, $ClaveTrabajador, $SueldoTrabajador, $SueldoExtraTrabajador]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

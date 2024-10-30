@@ -2,27 +2,22 @@
 require_once '../../config/conexion.php';
 class cliente
 {
+
     public $CodigoCliente;
+    public $Tipo;
+    public $NumeroDocumento;
     public $NombreCliente;
-    public $RucCliente;
-    public $TipoRuc;
-    public $NivelInteres;
-    public $ObservacionCompras;
     public $Email;
-    public $Telefono;
     public $Celular;
     private $conexion;
 
-    function __construct($CodigoCliente, $NombreCliente, $RucCliente, $TipoRuc, $NivelInteres, $ObservacionCompras, $Email, $Telefono, $Celular, $iniciarBD = true)
+    function __construct($CodigoCliente, $Tipo, $NumeroDocumento, $NombreCliente, $Email, $Celular, $iniciarBD = true)
     {
         $this->CodigoCliente = $CodigoCliente;
+        $this->Tipo = $Tipo;
+        $this->NumeroDocumento = $NumeroDocumento;
         $this->NombreCliente = $NombreCliente;
-        $this->RucCliente = $RucCliente;
-        $this->TipoRuc = $TipoRuc;
-        $this->NivelInteres = $NivelInteres;
-        $this->ObservacionCompras = $ObservacionCompras;
         $this->Email = $Email;
-        $this->Telefono = $Telefono;
         $this->Celular = $Celular;
         if ($iniciarBD) {
             $this->conexion = new conexion();
@@ -39,13 +34,10 @@ class cliente
         while ($datos = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $Cliente = new cliente(
                 $datos["idcliente"],
+                $datos["tipo"],
+                $datos["numerodocumento"],
                 $datos["nombre_cliente"],
-                $datos["ruccliente"],
-                $datos["tiporuc"],
-                $datos["nivel_interes"],
-                $datos["observacion_compras"],
                 $datos["email_cliente"],
-                $datos["telefono_cliente"],
                 $datos["celular_cliente"],
                 false
             );
@@ -56,17 +48,14 @@ class cliente
     public function GuardarCliente()
     {
         try {
+            $Tipo = $this->Tipo;
+            $NumeroDocumento = $this->NumeroDocumento;
             $NombreCliente = $this->NombreCliente;
-            $RucCliente = $this->RucCliente;
-            $TipoRuc = $this->TipoRuc;
-            $NivelInteres = $this->NivelInteres;
-            $ObservacionCompras = $this->ObservacionCompras;
             $Email = $this->Email;
-            $Telefono = $this->Telefono;
             $Celular = $this->Celular;
-            $sql = "CALL crearCliente(?, ?, ?, ?, ?, ?, ?, ?);";
+            $sql = "CALL crearCliente(?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$RucCliente, $TipoRuc, $NombreCliente, $NivelInteres, $ObservacionCompras, $Email, $Telefono, $Celular]);
+            $stmt->execute([$Tipo, $NumeroDocumento, $NombreCliente, $Email, $Celular]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -96,17 +85,14 @@ class cliente
     {
         try {
             $CodigoCliente = $this->CodigoCliente;
+            $Tipo = $this->Tipo;
+            $NumeroDocumento = $this->NumeroDocumento;
             $NombreCliente = $this->NombreCliente;
-            $RucCliente = $this->RucCliente;
-            $TipoRuc = $this->TipoRuc;
-            $NivelInteres = $this->NivelInteres;
-            $ObservacionCompras = $this->ObservacionCompras;
             $Email = $this->Email;
-            $Telefono = $this->Telefono;
             $Celular = $this->Celular;
-            $sql = "CALL actualizarCliente(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            $sql = "CALL actualizarCliente(?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCliente, $RucCliente, $TipoRuc, $NombreCliente, $NivelInteres, $ObservacionCompras, $Email, $Telefono, $Celular]);
+            $stmt->execute([$CodigoCliente, $Tipo, $NumeroDocumento, $NombreCliente, $Email, $Celular]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

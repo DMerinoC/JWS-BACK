@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: jws
+-- Host: localhost    Database: jwshsv7
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -16,6 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `almacen`
+--
+
+DROP TABLE IF EXISTS `almacen`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `almacen` (
+  `idalmacen` int NOT NULL AUTO_INCREMENT,
+  `idordentrabajo` int DEFAULT NULL,
+  `estado_producto_almacen` varchar(225) DEFAULT NULL,
+  PRIMARY KEY (`idalmacen`),
+  KEY `idordentrabajo` (`idordentrabajo`),
+  CONSTRAINT `almacen_ibfk_1` FOREIGN KEY (`idordentrabajo`) REFERENCES `ordentrabajo` (`idordentrabajo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `almacen`
+--
+
+LOCK TABLES `almacen` WRITE;
+/*!40000 ALTER TABLE `almacen` DISABLE KEYS */;
+/*!40000 ALTER TABLE `almacen` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cliente`
 --
 
@@ -24,16 +50,13 @@ DROP TABLE IF EXISTS `cliente`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cliente` (
   `idcliente` int NOT NULL AUTO_INCREMENT,
-  `ruccliente` varchar(15) DEFAULT NULL,
-  `tiporuc` varchar(15) DEFAULT NULL,
+  `tipo` varchar(15) DEFAULT NULL,
+  `numerodocumento` varchar(15) DEFAULT NULL,
   `nombre_cliente` varchar(45) DEFAULT NULL,
-  `nivel_interes` varchar(15) DEFAULT NULL,
-  `observacion_compras` varchar(255) DEFAULT NULL,
   `email_cliente` varchar(30) DEFAULT NULL,
-  `telefono_cliente` varchar(20) DEFAULT NULL,
   `celular_cliente` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +65,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'20512345678','Natural','Cliente SAC','Bajo','Comprador usual','clientefrec@empresa.com','999949487','984123657'),(2,'20587654321','Natural','Individuo SRL','Medio','Compras ocasionales','individuo@correo.com','987654324','912345679'),(5,'20512341234','Juridico','Corp SAC','Medio','Comprador','corp@empresa.com','999949123','984123333');
+INSERT INTO `cliente` VALUES (1,'Juridico','20512341234','Corp SAC','corp@empresa.com','984123322'),(2,'RUC','20512344321','Company2025','corp4@empresa.com','984124444'),(4,'RUC','20512346666','Company2027','corp7@empresa.com','984127777');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,16 +81,15 @@ CREATE TABLE `cobranza` (
   `idcliente` int DEFAULT NULL,
   `fecha_emision` timestamp NULL DEFAULT NULL,
   `fecha_vencimiento` timestamp NULL DEFAULT NULL,
+  `delivery` decimal(10,2) DEFAULT NULL,
   `monto` decimal(10,2) DEFAULT NULL,
-  `moneda` varchar(45) DEFAULT NULL,
+  `moneda` varchar(10) DEFAULT NULL,
   `documento` varchar(45) DEFAULT NULL,
-  `observacion` varchar(225) DEFAULT NULL,
-  `recurrente` varchar(45) DEFAULT NULL,
-  `estadocobranza` varchar(10) DEFAULT NULL,
+  `estado_cobranza` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`idcobranza`),
   KEY `idcliente` (`idcliente`),
   CONSTRAINT `cobranza_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +98,6 @@ CREATE TABLE `cobranza` (
 
 LOCK TABLES `cobranza` WRITE;
 /*!40000 ALTER TABLE `cobranza` DISABLE KEYS */;
-INSERT INTO `cobranza` VALUES (2,1,'2024-10-03 05:45:33','2024-11-02 05:45:33',1500.00,'USD','Factura 123','Cobranza mensual','Sí','NC');
 /*!40000 ALTER TABLE `cobranza` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,11 +112,12 @@ CREATE TABLE `cotizacion` (
   `idcotizacion` int NOT NULL AUTO_INCREMENT,
   `idcliente` int DEFAULT NULL,
   `fecha_emision` timestamp NULL DEFAULT NULL,
-  `observacion` varchar(225) DEFAULT NULL,
+  `estado` varchar(225) DEFAULT NULL,
+  `precio_cotizacion` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`idcotizacion`),
   KEY `idcliente` (`idcliente`),
   CONSTRAINT `cotizacion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +126,7 @@ CREATE TABLE `cotizacion` (
 
 LOCK TABLES `cotizacion` WRITE;
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
-INSERT INTO `cotizacion` VALUES (1,1,'2024-10-10 05:00:00','observacion'),(2,1,'2024-10-10 05:00:00','observacion'),(3,1,'2024-10-10 05:00:00','observacion');
+INSERT INTO `cotizacion` VALUES (1,1,'2024-10-02 05:00:00','Activado',20.00),(2,2,'2024-11-02 05:00:00','Desactivado',20.00),(4,2,'2024-11-05 05:00:00','Activo',200.00);
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +149,7 @@ CREATE TABLE `detallecotizacion` (
   KEY `idproducto` (`idproducto`),
   CONSTRAINT `detallecotizacion_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`),
   CONSTRAINT `detallecotizacion_ibfk_2` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +158,7 @@ CREATE TABLE `detallecotizacion` (
 
 LOCK TABLES `detallecotizacion` WRITE;
 /*!40000 ALTER TABLE `detallecotizacion` DISABLE KEYS */;
-INSERT INTO `detallecotizacion` VALUES (6,2,3,2,200.00,'todo mal'),(7,3,4,3,30.00,'Sin problemas'),(8,2,2,3,225.00,'Sin problemas'),(9,2,5,2,20.00,'todo mal'),(10,3,1,3,451.50,'Sin problemas'),(11,3,4,6,60.00,'todo mal'),(12,1,2,10,750.00,'Sin problemas');
+INSERT INTO `detallecotizacion` VALUES (1,1,2,3,224.00,'Sin problemas'),(2,1,1,2,222.00,'Sin problemas');
 /*!40000 ALTER TABLE `detallecotizacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,12 +172,13 @@ DROP TABLE IF EXISTS `guia_remision`;
 CREATE TABLE `guia_remision` (
   `idguiaremision` int NOT NULL AUTO_INCREMENT,
   `idcotizacion` int DEFAULT NULL,
+  `garantia` timestamp NULL DEFAULT NULL,
   `fecha_emision` timestamp NULL DEFAULT NULL,
-  `observacion` varchar(255) DEFAULT NULL,
+  `estado_guia` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idguiaremision`),
   KEY `idcotizacion` (`idcotizacion`),
   CONSTRAINT `guia_remision_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +187,7 @@ CREATE TABLE `guia_remision` (
 
 LOCK TABLES `guia_remision` WRITE;
 /*!40000 ALTER TABLE `guia_remision` DISABLE KEYS */;
-INSERT INTO `guia_remision` VALUES (1,3,'2024-10-09 05:00:00','Se envió el producto al cliente sin ningún inconveniente'),(2,1,'2024-10-01 05:00:00','Se envió el producto al cliente sin ningún inconveniente'),(3,2,'2024-05-01 05:00:00','Se envió el producto al cliente sin ningún inconveniente'),(5,1,'2024-05-03 05:00:00','Se encontró el producto'),(6,1,'2024-05-03 05:00:00','Se encontró el producto'),(7,2,'2024-05-03 05:00:00','Se encontró el producto');
+INSERT INTO `guia_remision` VALUES (1,2,'2024-09-03 05:00:00','2024-07-03 05:00:00','Se encontró el producto'),(3,2,'2025-02-03 05:00:00','2024-12-03 05:00:00','Se encontró el producto');
 /*!40000 ALTER TABLE `guia_remision` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,11 +206,11 @@ CREATE TABLE `materiaprima` (
   `cantidad_materia` int DEFAULT NULL,
   `unidadmedida` varchar(45) DEFAULT NULL,
   `descripcion` varchar(225) DEFAULT NULL,
-  `lista_predeterminado` varchar(45) DEFAULT NULL,
+  `tipo_materia` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idmateriaprima`),
   KEY `idproveedor` (`idproveedor`),
   CONSTRAINT `materiaprima_ibfk_1` FOREIGN KEY (`idproveedor`) REFERENCES `proveedor` (`idproveedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,7 +219,7 @@ CREATE TABLE `materiaprima` (
 
 LOCK TABLES `materiaprima` WRITE;
 /*!40000 ALTER TABLE `materiaprima` DISABLE KEYS */;
-INSERT INTO `materiaprima` VALUES (1,1,'Materia Prima 1',50.00,300,'kg','Materia de origen nacional','Sí'),(2,2,'Materia Prima 2',30.00,500,'kg','Materia de importación','No');
+INSERT INTO `materiaprima` VALUES (1,1,'Materia Prima 1',150.00,600,'kg','Materia de origen nacional','Para camas'),(3,4,'Materia Prima 2',1000.00,150,'Und.','Materia de origen Internacional','Para todo uso'),(4,3,'Materia Prima 4',100.00,15,'Und.','Materia de origen Internacional','Para todo uso'),(5,5,'Materia Prima 5',100.00,159,'Und.','Materia de origen Nacional','Para todo uso');
 /*!40000 ALTER TABLE `materiaprima` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,7 +236,7 @@ CREATE TABLE `ordentrabajo` (
   `idtrabajador` int DEFAULT NULL,
   `fecha_emision` timestamp NULL DEFAULT NULL,
   `fecha_maxima_entrega` timestamp NULL DEFAULT NULL,
-  `observacion` varchar(225) DEFAULT NULL,
+  `estado_orden` varchar(225) DEFAULT NULL,
   PRIMARY KEY (`idordentrabajo`),
   KEY `idcotizacion` (`idcotizacion`),
   KEY `idtrabajador` (`idtrabajador`),
@@ -228,7 +251,7 @@ CREATE TABLE `ordentrabajo` (
 
 LOCK TABLES `ordentrabajo` WRITE;
 /*!40000 ALTER TABLE `ordentrabajo` DISABLE KEYS */;
-INSERT INTO `ordentrabajo` VALUES (1,1,2,'2024-10-03 04:22:55','2024-10-10 04:22:55','Esta no es prueba');
+INSERT INTO `ordentrabajo` VALUES (2,2,2,'2024-02-02 05:00:00','2024-05-12 05:00:00','En pausa');
 /*!40000 ALTER TABLE `ordentrabajo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,9 +266,7 @@ CREATE TABLE `producto` (
   `idproducto` int NOT NULL AUTO_INCREMENT,
   `nombre_producto` varchar(45) DEFAULT NULL,
   `precio_producto` decimal(10,2) DEFAULT NULL,
-  `cantidad_producto` int DEFAULT NULL,
   `observacion_producto` varchar(225) DEFAULT NULL,
-  `lista_predeterminado` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idproducto`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -256,34 +277,8 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (1,'Producto A',150.50,100,'Producto de alta calidad','Sí'),(2,'Producto B',75.00,200,'Producto de calidad media','No'),(3,'Producto c',100.00,100,'Producto de baja calidad','Sí'),(4,'Producto D',10.00,100,'Producto de baja calidad','Sí'),(5,'Producto E',10.00,100,'Producto de baja calidad','Sí'),(6,'Producto F',300.00,100,'Producto de baja calidad','Sí'),(7,'Producto G',100.00,100,'Producto de baja calidad','Sí');
+INSERT INTO `producto` VALUES (1,'Producto01',20.00,'Producto establecido'),(2,'Producto02',20.00,'Producto establecido'),(5,'Producto03',20.00,'Producto establecido'),(6,'Producto04',11.00,'Producto probando'),(7,'Producto05',314.00,'Producto resistente');
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `producto_materiaprima`
---
-
-DROP TABLE IF EXISTS `producto_materiaprima`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `producto_materiaprima` (
-  `idproducto` int NOT NULL,
-  `idmateriaprima` int NOT NULL,
-  PRIMARY KEY (`idproducto`,`idmateriaprima`),
-  KEY `idmateriaprima` (`idmateriaprima`),
-  CONSTRAINT `producto_materiaprima_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
-  CONSTRAINT `producto_materiaprima_ibfk_2` FOREIGN KEY (`idmateriaprima`) REFERENCES `materiaprima` (`idmateriaprima`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `producto_materiaprima`
---
-
-LOCK TABLES `producto_materiaprima` WRITE;
-/*!40000 ALTER TABLE `producto_materiaprima` DISABLE KEYS */;
-/*!40000 ALTER TABLE `producto_materiaprima` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -296,12 +291,11 @@ DROP TABLE IF EXISTS `proveedor`;
 CREATE TABLE `proveedor` (
   `idproveedor` int NOT NULL AUTO_INCREMENT,
   `rucproveedor` varchar(15) DEFAULT NULL,
-  `tiporuc` varchar(15) DEFAULT NULL,
   `nombre_proveedor` varchar(45) DEFAULT NULL,
-  `url` varchar(150) DEFAULT NULL,
-  `cargo_compras` varchar(45) DEFAULT NULL,
-  `direccion_proveedor` varchar(45) DEFAULT NULL,
   `contacto_proveedor` varchar(45) DEFAULT NULL,
+  `direccion_proveedor` varchar(45) DEFAULT NULL,
+  `email_proveedor` varchar(30) DEFAULT NULL,
+  `celular_proveedor` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`idproveedor`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -312,8 +306,38 @@ CREATE TABLE `proveedor` (
 
 LOCK TABLES `proveedor` WRITE;
 /*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
-INSERT INTO `proveedor` VALUES (1,'20123456789','Juridico','Proveedor S.A.','www.proveedor.com','Gerente','Av. Principal 123','987654321'),(2,NULL,'20456789012','Servicios Integrales EIRL','www.servicios.com','Director','Calle Secundaria 456','987654322'),(4,'20456789012','Jurídico','Servicios Integrales EIRL','www.servicios.com','Director','Calle Secundaria 456','987654322');
+INSERT INTO `proveedor` VALUES (1,'20123456123','Ingresador S.A.','Emiliano Maximiliano','Av. Secundaria 123','ingresador@gmail.com','999888777'),(3,'20123456444','Sacador S.A.','Falcon Juminis','Av. Primaria 123','sacador@gmail.com','999666333'),(4,'20123456999','Orientador S.A.','Liliana Perez','Av. Hinostroza 123','lili45@gmail.com','999111555'),(5,'20123453216','Factory S.A.','Max Sanvelty','Av. Imperial 123','max33@gmail.com','999777321');
 /*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `receta`
+--
+
+DROP TABLE IF EXISTS `receta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `receta` (
+  `idproducto` int DEFAULT NULL,
+  `idmateriaprima` int DEFAULT NULL,
+  `cantidadmateria` int DEFAULT NULL,
+  `preciomateriacantidad` decimal(10,2) DEFAULT NULL,
+  `idreceta` int NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`idreceta`),
+  KEY `idproducto` (`idproducto`),
+  KEY `idmateriaprima` (`idmateriaprima`),
+  CONSTRAINT `receta_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
+  CONSTRAINT `receta_ibfk_2` FOREIGN KEY (`idmateriaprima`) REFERENCES `materiaprima` (`idmateriaprima`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `receta`
+--
+
+LOCK TABLES `receta` WRITE;
+/*!40000 ALTER TABLE `receta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `receta` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -327,7 +351,7 @@ CREATE TABLE `rol` (
   `idrol` int NOT NULL AUTO_INCREMENT,
   `rol` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idrol`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -336,7 +360,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Administrador'),(2,'Vendedor'),(3,'Trabajador'),(4,'Desarrollador');
+INSERT INTO `rol` VALUES (1,'Administrador'),(2,'Vendedor'),(3,'Trabajador');
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -355,10 +379,11 @@ CREATE TABLE `trabajador` (
   `usuario_trabajador` varchar(45) DEFAULT NULL,
   `clave_trabajador` varchar(255) DEFAULT NULL,
   `sueldo_trabajador` decimal(10,2) DEFAULT NULL,
+  `sueldo_extra` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`idtrabajador`),
   KEY `idrol` (`idrol`),
   CONSTRAINT `trabajador_ibfk_1` FOREIGN KEY (`idrol`) REFERENCES `rol` (`idrol`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -367,13 +392,43 @@ CREATE TABLE `trabajador` (
 
 LOCK TABLES `trabajador` WRITE;
 /*!40000 ALTER TABLE `trabajador` DISABLE KEYS */;
-INSERT INTO `trabajador` VALUES (2,1,'Diego Merino','inge@gmail.com','dmerino','$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO',3000.00),(20, 1, "admin", "admin@gmail.com", "admin", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000),(21, 2, "vendedor", "vendedor@gmail.com", "vendedor", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000),(22, 3, "trabajador", "trabajador@gmail.com", "trabajador", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000),(23, 4, "desarrollador", "desarrollador@gmail.com", "desarrollador", "$2y$10$6pOvQP68X8uiZzqWOZrwveDdOCFBUEPPgQyPPheu/Cobt72Lt63bO", 4000);
+INSERT INTO `trabajador` VALUES (1,1,'Ricardo Palma','ricardo@gmail.com','dmerino','$2y$10$fxGY6ORRm3Z7sqCnSMGwl.NbRbOUECCCx89VStsZzfxS3JE2Vp1jS',2500.00,500.00),(2,2,'Ricardo Palmeño','ricardo1@gmail.com','ricardo23','$2y$10$Bkmpo5eYnFl2oFlewI.bc.hJIsMvhh8Fwp0xUY4qxAyYviKape5Oy',2500.00,500.00),(3,3,'Ricardo Palmaten','ricardo13@gmail.com','ricardo22','$2y$10$Una1gEWvCp9S6QyBKBGSL.kZtf8DSIltrxMhItcy1mqImFfl/aR.G',3000.00,500.00);
 /*!40000 ALTER TABLE `trabajador` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'jws'
+-- Dumping routines for database 'jwshsv7'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `actualizarAlmacen` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarAlmacen`(
+	_idalmacen INT,
+	_idordentrabajo INT,
+    _estado_producto_almacen VARCHAR(225)
+	)
+BEGIN
+    START TRANSACTION;
+        BEGIN
+			UPDATE almacen 
+			SET idordentrabajo = _idordentrabajo, estado_producto_almacen = _estado_producto_almacen
+			WHERE idalmacen = _idalmacen;
+			SELECT 'Almacen actualizado correctamente' AS mensaje;
+		END;
+    COMMIT;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `actualizarCliente` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -386,25 +441,22 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarCliente`(
     _idcliente INT,
-    _ruccliente VARCHAR(15),
-    _tiporuc VARCHAR(15),
+    _tipo VARCHAR(15),
+    _numerodocumento VARCHAR(15),
     _nombre_cliente VARCHAR(45),
-    _nivel_interes VARCHAR(15),
-    _observacion_compras VARCHAR(255),
     _email_cliente VARCHAR(30),
-    _telefono_cliente VARCHAR(20),
     _celular_cliente VARCHAR(20)
     )
 BEGIN
 	declare clienteExistente boolean;
-    SELECT EXISTS(SELECT 1 FROM cliente WHERE _ruccliente = ruccliente and idcliente != _idcliente) INTO clienteExistente;
+    SELECT EXISTS(SELECT 1 FROM cliente WHERE numerodocumento = _numerodocumento and idcliente != _idcliente) INTO clienteExistente;
     if clienteExistente then
     SELECT 'El cliente ya existe' AS mensaje;
     else
     START TRANSACTION;
         BEGIN
 			UPDATE cliente 
-			SET ruccliente = _ruccliente, tiporuc = _tiporuc, nombre_cliente = _nombre_cliente, nivel_interes = _nivel_interes, observacion_compras = _observacion_compras, email_cliente=_email_cliente, telefono_cliente=_telefono_cliente,celular_cliente=_celular_cliente
+			SET tipo = _tipo, numerodocumento = _numerodocumento, nombre_cliente = _nombre_cliente, email_cliente = _email_cliente, celular_cliente=_celular_cliente
 			WHERE idcliente = _idcliente;
 			SELECT 'Cliente actualizado correctamente' AS mensaje;
 		END;
@@ -431,12 +483,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarCobranza`(
     _idcliente INT,
     _fecha_emision TIMESTAMP,
     _fecha_vencimiento TIMESTAMP,
+    _delivery DECIMAL(10,2),
     _monto DECIMAL(10,2),
-    _moneda VARCHAR(45),
+    _moneda VARCHAR(10),
     _documento VARCHAR(45),
-    _observacion VARCHAR(225),
-    _recurrente VARCHAR(45),
-    _estadocobranza VARCHAR(10)
+    _estado_cobranza VARCHAR(25)
 	)
 BEGIN
     START TRANSACTION;
@@ -446,12 +497,11 @@ BEGIN
                 idcliente=_idcliente,
                 fecha_emision=_fecha_emision,
                 fecha_vencimiento=_fecha_vencimiento,
+                delivery=_delivery,
                 monto=_monto,
                 moneda=_moneda,
                 documento=_documento,
-                observacion=_observacion,
-                recurrente=_recurrente,
-                estadocobranza=_estadocobranza
+                estado_cobranza=_estado_cobranza
             WHERE idcobranza = _idcobranza;
             SELECT 'Cobranza actualizada correctamente' AS mensaje;
         END;
@@ -476,23 +526,22 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarCotizacion`(
     _idcotizacion INT,
     _idcliente INT,
     _fecha_emision timestamp,
-    _observacion VARCHAR(225)
+    _estado VARCHAR(225),
+    _precio_cotizacion DECIMAL(10,2)
     )
 BEGIN
-	declare cotizacionExistente boolean;
-    SELECT EXISTS(SELECT 1 FROM cotizacion WHERE idcotizacion != _idcotizacion) INTO cotizacionExistente;
-    if not cotizacionExistente then
-    SELECT 'La cotizacion no existe' AS mensaje;
-	else
     START TRANSACTION;
         BEGIN
 			UPDATE cotizacion 
-			SET idcliente = _idcliente, fecha_emision = _fecha_emision,
-            observacion = _observacion;
+			SET
+            idcliente = _idcliente,
+            fecha_emision = _fecha_emision,
+            estado = _estado,
+            precio_cotizacion=_precio_cotizacion
+            where idcotizacion=_idcotizacion;
 			SELECT 'Cotizacion actualizada correctamente' AS mensaje;
 		END;
     COMMIT;
-    end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -514,32 +563,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarDetalleCotizacion`(
     _idcotizacion INT,
     _idproducto INT,
     _cantidad INT,
+    _precio DECIMAL(10,2),
     _observacion VARCHAR(225)
     )
 BEGIN
-    DECLARE precio_calculado DECIMAL(10,2);
-
-    -- Obtener el precio del producto
-    SELECT P.precio_producto INTO precio_calculado
-    FROM producto AS P
-    WHERE P.idproducto = _idproducto;
-
-    -- Verificar que el precio no es nulo
-    IF precio_calculado IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Producto no encontrado';
-    END IF;
-
-    -- Calcular el precio total
-    SET precio_calculado = precio_calculado * _cantidad;
-
     START TRANSACTION;
         BEGIN
             UPDATE detallecotizacion 
             SET
-                idcotizacion=_idcotizacion ,
-                idproducto=_idproducto ,
-                cantidad=_cantidad ,
-                precio = precio_calculado,
+                idcotizacion=_idcotizacion,
+                idproducto=_idproducto,
+                cantidad=_cantidad,
+                precio = _precio,
                 observacion=_observacion
             WHERE iddetallecotizacion = _iddetallecotizacion;
             SELECT 'Detalle cotizacion actualizado correctamente' AS mensaje;
@@ -562,10 +597,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarGuiaRemision`(
-    _idguiaremision int,
-    _idcotizacion int,
-    _fecha_emision timestamp,
-    _observacion VARCHAR(225)
+    _idguiaremision INT,
+    _idcotizacion INT,
+    _garantia TIMESTAMP,
+    _fecha_emision TIMESTAMP,
+    _estado_guia VARCHAR(255)
     )
 BEGIN
     START TRANSACTION;
@@ -573,8 +609,9 @@ BEGIN
             UPDATE guia_remision 
             SET 
                 idcotizacion=_idcotizacion,
+                garantia=_garantia,
                 fecha_emision=_fecha_emision,
-                observacion=_observacion
+                estado_guia=_estado_guia
             WHERE idguiaremision = _idguiaremision;
             SELECT 'Guia remision actualizada correctamente' AS mensaje;
         END;
@@ -603,7 +640,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarMateriaPrima`(
     _cantidad_materia int,
     _unidadmedida VARCHAR(45),
     _descripcion varchar(225),
-    _lista_predeterminado varchar(45)
+    _tipo_materia varchar(45)
     )
 BEGIN
 	declare materiaPrimaExiste boolean;
@@ -624,7 +661,7 @@ BEGIN
 				cantidad_materia = _cantidad_materia,
 				unidadmedida = _unidadmedida,
 				descripcion = _descripcion,
-				lista_predeterminado = _lista_predeterminado
+				tipo_materia = _tipo_materia
 
 			WHERE idmateriaprima = _idmateriaprima;
 			SELECT 'Materia prima actualizada correctamente' AS mensaje;
@@ -653,7 +690,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarOrdenTrabajo`(
 	_idtrabajador INT,
 	_fecha_emision TIMESTAMP,
 	_fecha_maxima_entrega TIMESTAMP,
-	_observacion VARCHAR(225)
+	_estado_orden VARCHAR(225)
 	)
 BEGIN
 		START TRANSACTION;
@@ -664,7 +701,7 @@ BEGIN
 				idtrabajador = _idtrabajador,
 				fecha_emision = _fecha_emision,
 				fecha_maxima_entrega = _fecha_maxima_entrega,
-				observacion = _observacion
+				estado_orden = _estado_orden
 			WHERE idordentrabajo = _idordentrabajo;
 			SELECT 'Orden de Trabajo actualizada correctamente' AS mensaje;
         END;
@@ -689,9 +726,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarProducto`(
     _idproducto INT,
     _nombre_producto VARCHAR(45),
     _precio_producto decimal(10,2),
-    _cantidad_producto int,
-    _observacion_producto VARCHAR(225),
-    _lista_predeterminado VARCHAR(45)
+    _observacion_producto VARCHAR(225)
     )
 BEGIN
 	declare productoExiste boolean;
@@ -705,9 +740,10 @@ BEGIN
     START TRANSACTION;
         BEGIN
 			UPDATE producto 
-			SET nombre_producto = _nombre_producto, precio_producto = _precio_producto,
-            cantidad_producto = _cantidad_producto, observacion_producto = _observacion_producto,
-            observacion_producto = _observacion_producto, lista_predeterminado=_lista_predeterminado
+			SET
+            nombre_producto = _nombre_producto,
+            precio_producto = _precio_producto,
+            observacion_producto = _observacion_producto
 			WHERE idproducto = _idproducto;
 			SELECT 'Producto actualizado correctamente' AS mensaje;
 		END;
@@ -732,12 +768,11 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarProveedor`(
     _idproveedor INT,
     _rucproveedor VARCHAR(15),
-    _tiporuc VARCHAR(15),
     _nombre_proveedor varchar(45),
-    _url VARCHAR(150),
-    _cargo_compras VARCHAR(45),
+    _contacto_proveedor varchar(45),
     _direccion_proveedor varchar(45),
-    _contacto_proveedor varchar(45)
+    _email_proveedor varchar(30),
+    _celular_proveedor varchar(20)
     )
 BEGIN
 	declare proveedorExiste boolean;
@@ -752,19 +787,49 @@ BEGIN
         BEGIN
 			UPDATE proveedor 
 			SET
-            idproveedor = _idproveedor,
             rucproveedor = _rucproveedor,
-            tiporuc = _tiporuc,
             nombre_proveedor = _nombre_proveedor, 
-            url = _url,
-            cargo_compras = _cargo_compras, 
+            contacto_proveedor = _contacto_proveedor,
             direccion_proveedor=_direccion_proveedor,
-            contacto_proveedor = _contacto_proveedor
+            email_proveedor = _email_proveedor,
+            celular_proveedor=_celular_proveedor
 			WHERE idproveedor = _idproveedor;
 			SELECT 'Proveedor actualizado correctamente' AS mensaje;
 		END;
     COMMIT;
     end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `actualizarReceta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarReceta`(
+	_idreceta INT,
+	_idproducto INT, 
+	_idmateriaprima INT, 
+	_cantidadmateria INT, 
+	_preciomateriacantidad DECIMAL(10,2)
+	)
+BEGIN
+    START TRANSACTION;
+        BEGIN
+			UPDATE receta 
+			SET idproducto=_idproducto, idmateriaprima = _idmateriaprima, cantidadmateria = _cantidadmateria, preciomateriacantidad = _preciomateriacantidad
+			WHERE idreceta = _idreceta;
+			SELECT 'Receta actualizada correctamente' AS mensaje;
+		END;
+    COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -787,26 +852,60 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarTrabajador`(
     _nombre VARCHAR(45),
     _correo VARCHAR(45),
     _usuario VARCHAR(45),
-    _contraseña VARCHAR(255),
-    _sueldo DECIMAL(10,2)
+    _clave VARCHAR(255),
+    _sueldo DECIMAL(10,2),
+    _sueldo_extra DECIMAL(10,2)
     )
 BEGIN
 	declare trabajadorExistente boolean;
-    
-    SELECT EXISTS(SELECT 1 FROM trabajador WHERE nombre_trabajador = _nombre and idtrabajador != _idtrabajador) INTO trabajadorExistente;
-	
+    SELECT EXISTS(SELECT 1 FROM trabajador WHERE usuario_trabajador = _usuario and idtrabajador != _idtrabajador) INTO trabajadorExistente;
     if trabajadorExistente then
     SELECT 'El trabajador ya existe' AS mensaje;
     else
     START TRANSACTION;
         BEGIN
 			UPDATE Trabajador 
-			SET idrol = _idrol, nombre_trabajador = _nombre, correo_trabajador = _correo, usuario_trabajador = _usuario, clave_trabajador = _contraseña, sueldo_trabajador=_sueldo
+			SET
+            idrol = _idrol,
+            nombre_trabajador = _nombre,
+            correo_trabajador = _correo,
+            usuario_trabajador = _usuario,
+            clave_trabajador = _clave,
+            sueldo_trabajador=_sueldo,
+            sueldo_extra=_sueldo_extra
 			WHERE idtrabajador = _idtrabajador;
 			SELECT 'Trabajador actualizado correctamente' AS mensaje;
 		END;
     COMMIT;
     end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `crearAlmacen` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `crearAlmacen`(
+	_idordentrabajo INT,
+    _estado_producto_almacen VARCHAR(225)
+	)
+BEGIN
+		START TRANSACTION;
+        BEGIN
+                INSERT INTO almacen (idordentrabajo,estado_producto_almacen) 
+                VALUES (_idordentrabajo, _estado_producto_almacen);
+                SELECT 'Almacen insertado correctamente' AS mensaje;
+        END;
+        COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -824,26 +923,23 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearCliente`(
-    _ruccliente VARCHAR(15),
-    _tiporuc VARCHAR(15),
+    _tipo VARCHAR(15),
+    _numerodocumento VARCHAR(15),
     _nombre_cliente VARCHAR(45),
-    _nivel_interes VARCHAR(15),
-    _observacion_compras VARCHAR(255),
     _email_cliente VARCHAR(30),
-    _telefono_cliente VARCHAR(20),
     _celular_cliente VARCHAR(20)
     )
 BEGIN
 	declare rucexistente boolean;
-    SELECT EXISTS(SELECT 1 FROM cliente WHERE ruccliente = _ruccliente) INTO rucexistente;
+    SELECT EXISTS(SELECT 1 FROM cliente WHERE numerodocumento = _numerodocumento) INTO rucexistente;
 	if rucexistente then
     SELECT 'El cliente ya existe' AS mensaje;
     
     else 
 		START TRANSACTION;
         BEGIN
-                INSERT INTO cliente (ruccliente,tiporuc,nombre_cliente,nivel_interes,observacion_compras,email_cliente,telefono_cliente,celular_cliente) 
-                VALUES (_ruccliente,_tiporuc,_nombre_cliente,_nivel_interes,_observacion_compras,_email_cliente,_telefono_cliente,_celular_cliente);
+                INSERT INTO cliente (tipo,numerodocumento,nombre_cliente,email_cliente,celular_cliente) 
+                VALUES (_tipo, _numerodocumento,_nombre_cliente,_email_cliente,_celular_cliente);
                 SELECT 'Cliente insertado correctamente' AS mensaje;
         END;
         COMMIT;
@@ -865,21 +961,20 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearCobranza`(
-	_idcliente INT,
+    _idcliente INT,
     _fecha_emision TIMESTAMP,
     _fecha_vencimiento TIMESTAMP,
+    _delivery DECIMAL(10,2),
     _monto DECIMAL(10,2),
-    _moneda VARCHAR(45),
+    _moneda VARCHAR(10),
     _documento VARCHAR(45),
-    _observacion VARCHAR(225),
-    _recurrente VARCHAR(45),
-    _estadocobranza VARCHAR(10)
+    _estado_cobranza VARCHAR(25)
 	)
 BEGIN
 		START TRANSACTION;
         BEGIN
-                INSERT INTO cobranza (idcliente,fecha_emision,fecha_vencimiento ,monto ,moneda,documento,observacion,recurrente,estadocobranza) 
-                VALUES (_idcliente,_fecha_emision,_fecha_vencimiento ,_monto ,_moneda,_documento,_observacion,_recurrente,_estadocobranza);
+                INSERT INTO cobranza (idcliente,fecha_emision,fecha_vencimiento ,delivery,monto ,moneda,documento,estado_cobranza) 
+                VALUES (_idcliente,_fecha_emision,_fecha_vencimiento ,_delivery,_monto ,_moneda,_documento,_estado_cobranza);
                 SELECT 'Cobranza insertada correctamente' AS mensaje;
         END;
         COMMIT;
@@ -902,11 +997,12 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearcotizacion`(
     _idcliente INT,
     _fecha_emision timestamp,
-    _observacion VARCHAR(225)   
+    _estado VARCHAR(225),
+    _precio_cotizacion DECIMAL(10,2)
     )
 BEGIN
-	INSERT INTO cotizacion (idcliente, fecha_emision, observacion) 
-	VALUES (_idcliente, _fecha_emision, _observacion);
+	INSERT INTO cotizacion (idcliente, fecha_emision, estado, precio_cotizacion) 
+	VALUES (_idcliente, _fecha_emision, _estado,_precio_cotizacion);
 	SELECT 'Cotizacion insertado correctamente' AS mensaje;
 END ;;
 DELIMITER ;
@@ -928,29 +1024,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `crearDetalleCotizacion`(
     _idcotizacion INT,
     _idproducto INT,
     _cantidad INT,
+    _precio DECIMAL(10,2),
     _observacion VARCHAR(225)
 )
 BEGIN
-    DECLARE precio_calculado DECIMAL(10,2);
-    
-    -- Obtener el precio del producto
-    SELECT P.precio_producto INTO precio_calculado
-    FROM producto AS P
-    WHERE P.idproducto = _idproducto;
-
-    -- Verificar que el precio no es nulo
-    IF precio_calculado IS NULL THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Producto no encontrado';
-    END IF;
-
-    -- Calcular el precio total
-    SET precio_calculado = precio_calculado * _cantidad;
-
-    -- Iniciar transacción
     START TRANSACTION;
     BEGIN
         INSERT INTO detallecotizacion (idcotizacion, idproducto, cantidad, precio, observacion) 
-        VALUES (_idcotizacion, _idproducto, _cantidad, precio_calculado, _observacion);
+        VALUES (_idcotizacion, _idproducto, _cantidad, _precio, _observacion);
         SELECT 'Detalle cotizacion insertado correctamente' AS mensaje;
     END;
     COMMIT;
@@ -971,15 +1052,16 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearGuiaRemision`(
-    _idcotizacion int,
-    _fecha_emision timestamp,
-    _observacion VARCHAR(225)
+    _idcotizacion INT,
+    _garantia TIMESTAMP,
+    _fecha_emision TIMESTAMP,
+    _estado_guia VARCHAR(255)
 )
 BEGIN
     START TRANSACTION;
     BEGIN
-        INSERT INTO guia_remision (idcotizacion,fecha_emision,observacion) 
-        VALUES (_idcotizacion,_fecha_emision,_observacion);
+        INSERT INTO guia_remision (idcotizacion,garantia,fecha_emision,estado_guia) 
+        VALUES (_idcotizacion,_garantia,_fecha_emision,_estado_guia);
         SELECT 'Guia remision insertada correctamente' AS mensaje;
     END;
     COMMIT;
@@ -1006,7 +1088,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `crearMateriaPrima`(
     _cantidad_materia int,
     _unidadmedida VARCHAR(45),
     _descripcion varchar(225),
-    _lista_predeterminado varchar(45)
+    _tipo_materia varchar(45)
 )
 BEGIN
 	declare materiaPrimaExiste boolean;
@@ -1019,8 +1101,8 @@ BEGIN
     else 
 		START TRANSACTION;
         BEGIN
-                INSERT INTO materiaprima (idproveedor,nombre_materia,precio_materia ,cantidad_materia ,unidadmedida,descripcion,lista_predeterminado) 
-                VALUES (_idproveedor,_nombre_materia,_precio_materia ,_cantidad_materia ,_unidadmedida,_descripcion,_lista_predeterminado);
+                INSERT INTO materiaprima (idproveedor,nombre_materia,precio_materia ,cantidad_materia ,unidadmedida,descripcion,tipo_materia) 
+                VALUES (_idproveedor,_nombre_materia,_precio_materia ,_cantidad_materia ,_unidadmedida,_descripcion,_tipo_materia);
                 SELECT 'Materia Prima insertado correctamente' AS mensaje;
         END;
         COMMIT;
@@ -1043,14 +1125,14 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearOrdenTrabajo`(
 	_idcotizacion INT,
-	_id_trabajador INT,
+	_idtrabajador INT,
 	_fecha_emision TIMESTAMP,
 	_fecha_maxima_entrega TIMESTAMP,
-	_observacion VARCHAR(225)
+	_estado_orden VARCHAR(225)
 	)
 BEGIN
-	INSERT INTO ordentrabajo (idcotizacion, idtrabajador, fecha_emision, fecha_maxima_entrega, observacion) 
-	VALUES (_idcotizacion, _id_trabajador, _fecha_emision, _fecha_maxima_entrega, _observacion);
+	INSERT INTO ordentrabajo (idcotizacion, idtrabajador, fecha_emision, fecha_maxima_entrega, estado_orden) 
+	VALUES (_idcotizacion, _idtrabajador, _fecha_emision, _fecha_maxima_entrega, _estado_orden);
 	SELECT 'Orden de trabajo insertada correctamente' AS mensaje;
 END ;;
 DELIMITER ;
@@ -1071,9 +1153,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearProducto`(
     _nombre_producto VARCHAR(45),
     _precio_producto decimal(10,2),
-    _cantidad_producto int,
-    _observacion_producto VARCHAR(225),
-    _lista_predeterminado VARCHAR(45)
+    _observacion_producto VARCHAR(225)
 )
 BEGIN
 	declare productoExiste boolean;
@@ -1083,8 +1163,8 @@ BEGIN
     ELSE 
 		START TRANSACTION;
         BEGIN
-                INSERT INTO producto (nombre_producto, precio_producto, cantidad_producto, observacion_producto, lista_predeterminado) 
-                VALUES (_nombre_producto,_precio_producto,_cantidad_producto,_observacion_producto,_lista_predeterminado);
+                INSERT INTO producto (nombre_producto, precio_producto,  observacion_producto) 
+                VALUES (_nombre_producto,_precio_producto,_observacion_producto);
                 SELECT 'Producto insertado correctamente' AS mensaje;
         END;
         COMMIT;
@@ -1107,12 +1187,11 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearProveedor`(
     _rucproveedor VARCHAR(15),
-    _tiporuc VARCHAR(15),
     _nombre_proveedor varchar(45),
-    _url VARCHAR(150),
-    _cargo_compras VARCHAR(45),
+    _contacto_proveedor varchar(45),
     _direccion_proveedor varchar(45),
-    _contacto_proveedor varchar(45)
+    _email_proveedor varchar(30),
+    _celular_proveedor varchar(20)
 )
 BEGIN
 	declare proveedorExiste boolean;
@@ -1125,12 +1204,42 @@ BEGIN
     else 
 		START TRANSACTION;
         BEGIN
-                INSERT INTO proveedor (rucproveedor,tiporuc,nombre_proveedor,url,cargo_compras,direccion_proveedor,contacto_proveedor) 
-                VALUES (_rucproveedor,_tiporuc,_nombre_proveedor,_url,_cargo_compras,_direccion_proveedor,_contacto_proveedor);
+                INSERT INTO proveedor (rucproveedor,nombre_proveedor,contacto_proveedor,direccion_proveedor,email_proveedor,celular_proveedor) 
+                VALUES (_rucproveedor,_nombre_proveedor,_contacto_proveedor,_direccion_proveedor,_email_proveedor,_celular_proveedor);
                 SELECT 'Proveedor insertado correctamente' AS mensaje;
         END;
         COMMIT;
 	end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `crearReceta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `crearReceta`(
+	_idproducto INT, 
+	_idmateriaprima INT, 
+	_cantidadmateria INT, 
+	_preciomateriacantidad DECIMAL(10,2)
+    )
+BEGIN
+    START TRANSACTION;
+    BEGIN
+        INSERT INTO receta (idproducto,idmateriaprima,cantidadmateria,preciomateriacantidad) 
+        VALUES (_idproducto,_idmateriaprima,_cantidadmateria,_preciomateriacantidad);
+        SELECT 'Receta insertada correctamente' AS mensaje;
+    END;
+    COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1152,8 +1261,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `crearTrabajador`(
     _nombre VARCHAR(45),
     _correo VARCHAR(45),
     _usuario VARCHAR(45),
-    _contraseña VARCHAR(255),
-    _sueldo DECIMAL(10,2)
+    _clave VARCHAR(255),
+    _sueldo DECIMAL(10,2),
+    _sueldo_extra DECIMAL(10,2)
     )
 BEGIN
     DECLARE trabajadorExistente BOOLEAN;
@@ -1171,12 +1281,38 @@ BEGIN
     ELSE
         START TRANSACTION;
         BEGIN
-                INSERT INTO Trabajador (idrol, nombre_trabajador, correo_trabajador, usuario_trabajador, clave_trabajador, sueldo_trabajador) 
-                VALUES (_idrol, _nombre, _correo, _usuario, _contraseña, _sueldo);
+                INSERT INTO Trabajador (idrol, nombre_trabajador, correo_trabajador, usuario_trabajador, clave_trabajador, sueldo_trabajador,sueldo_extra) 
+                VALUES (_idrol, _nombre, _correo, _usuario, _clave, _sueldo,_sueldo_extra);
                 SELECT 'Trabajador insertado correctamente' AS mensaje;
         END;
         COMMIT;
     END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `eliminarAlmacen` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarAlmacen`(
+	_idalmacen INT
+    )
+BEGIN
+        START TRANSACTION;
+        BEGIN
+            DELETE FROM almacen WHERE idalmacen = _idalmacen;
+            SELECT 'Almacen eliminado correctamente' AS mensaje;
+        END;
+        COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1438,31 +1574,43 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarProveedor`(_idproveedor INT)
 BEGIN
     DECLARE proveedorexistente BOOLEAN;
-    DECLARE mensajeSalida VARCHAR(255) DEFAULT '';
-
-    -- Comprobar si el proveedor existe
     SELECT EXISTS(SELECT 1 FROM proveedor WHERE idproveedor = _idproveedor) INTO proveedorexistente;
-
     IF NOT proveedorexistente THEN
-        SET mensajeSalida = 'El proveedor no existe';
+        SELECT 'El proveedor no existe' AS mensaje;
     ELSE
-        -- Intentar eliminar el proveedor
         BEGIN
-            DECLARE EXIT HANDLER FOR SQLEXCEPTION
-            BEGIN
-                ROLLBACK; -- Deshacer cualquier cambio en caso de error
-                SET mensajeSalida = 'Existe algún proveedor actuando en otro servicio.';
-            END;
-
             START TRANSACTION;
             DELETE FROM proveedor WHERE idproveedor = _idproveedor;
             COMMIT;
-            SET mensajeSalida = 'Proveedor eliminado correctamente';
+            SELECT 'Proveedor eliminado correctamente' AS mensaje;
         END;
     END IF;
-
-    -- Devolver el mensaje final
-    SELECT mensajeSalida AS mensaje;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `eliminarReceta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarReceta`(
+	_idreceta INT
+	)
+BEGIN
+        START TRANSACTION;
+        BEGIN
+            DELETE FROM receta WHERE idreceta = _idreceta;
+            SELECT 'Receta eliminada correctamente' AS mensaje;
+        END;
+        COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1499,6 +1647,28 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listarAlmacen` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listarAlmacen`()
+BEGIN
+SELECT 
+    idalmacen, idordentrabajo, estado_producto_almacen
+FROM
+    almacen;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `listarCliente` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1511,7 +1681,15 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listarCliente`()
 BEGIN
-select idcliente, nombre_cliente, ruccliente, tiporuc, nivel_interes, observacion_compras, email_cliente, telefono_cliente, celular_cliente from cliente;
+SELECT 
+    idcliente,
+    tipo,
+    numerodocumento,
+    nombre_cliente,
+	email_cliente,
+    celular_cliente
+FROM
+    cliente;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1528,23 +1706,23 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listarCobranza`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listarcobranza`()
 BEGIN
-    SELECT 
-        CO.idcobranza,
-        CO.idcliente,
-        CL.nombre_cliente,
-        CO.fecha_emision,
-        CO.fecha_vencimiento,
-        CO.monto,
-        CO.moneda,
-        CO.documento,
-        CO.observacion,
-        CO.recurrente,
-        CO.estadocobranza
-    FROM
-        cobranza AS CO
-        INNER JOIN cliente AS CL ON CO.idcliente = CL.idcliente;
+SELECT 
+    idcobranza,
+    CO.idcliente,
+    CL.nombre_cliente,
+    fecha_emision,
+    fecha_vencimiento,
+    delivery,
+    monto,
+    moneda,
+    documento,
+    estado_cobranza    
+FROM
+    cobranza AS CO
+        INNER JOIN
+    cliente AS CL ON CO.idcliente = CL.idcliente;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1565,9 +1743,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `listarCotizacion`()
 BEGIN
 SELECT 
     idcotizacion,
+    CO.idcliente,
+    fecha_emision,
+    estado,
+    precio_cotizacion,
     nombre_cliente,
     celular_cliente,
-    fecha_emision,observacion
+    email_cliente
 FROM
     cotizacion AS CO
         INNER JOIN
@@ -1588,9 +1770,10 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `listarDetalleCotizacion`(_idcotizacion INT, _fecha_emision TIMESTAMP)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listarDetalleCotizacion`(_idcotizacion INT)
 BEGIN
 SELECT 
+	iddetallecotizacion,
     C.idcotizacion,
     P.nombre_producto,
     P.precio_producto,
@@ -1604,7 +1787,7 @@ FROM
     producto AS P ON P.idproducto = D.idproducto
         INNER JOIN
     cotizacion AS C ON C.idcotizacion= D.idcotizacion
-    where C.idcotizacion=_idcotizacion AND C.fecha_emision=_fecha_emision;
+    where C.idcotizacion=_idcotizacion;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1626,14 +1809,16 @@ BEGIN
 SELECT 
     GM.idguiaremision,
     C.idcotizacion,
-    C.idcliente,
     Cl.nombre_cliente,
+    GM.garantia,
     GM.fecha_emision,
-    GM.observacion
+    GM.estado_guia
 FROM
-    guia_remision as GM INNER JOIN cotizacion as C
-    on GM.idcotizacion = C.idcotizacion INNER JOIN cliente as Cl
-    on C.idcliente = Cl.idcliente;
+    guia_remision AS GM
+        INNER JOIN
+    cotizacion AS C ON GM.idcotizacion = C.idcotizacion
+        INNER JOIN
+    cliente AS Cl ON C.idcliente = Cl.idcliente;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1653,9 +1838,14 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listarMateriaPrima`()
 BEGIN
 SELECT 
-    M.idmateriaprima, M.nombre_materia,
-    M.precio_materia,M.cantidad_materia,M.unidadmedida, P.nombre_proveedor,
-    M.descripcion, M.lista_predeterminado
+    M.idmateriaprima,
+    M.nombre_materia,
+    M.precio_materia,
+    M.cantidad_materia,
+    M.unidadmedida,
+    P.nombre_proveedor,
+    M.descripcion,
+    M.tipo_materia
 FROM
     materiaprima AS M
         INNER JOIN
@@ -1686,7 +1876,7 @@ SELECT
     T.sueldo_trabajador,
     OT.fecha_emision,
     OT.fecha_maxima_entrega,
-    OT.observacion
+    OT.estado_orden
 FROM
     ordentrabajo AS OT
         INNER JOIN
@@ -1710,8 +1900,12 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listarProducto`()
 BEGIN
 SELECT 
-    idproducto, nombre_producto, precio_producto, cantidad_producto, observacion_producto, lista_predeterminado
-FROM producto;
+    idproducto,
+    nombre_producto,
+    precio_producto,
+    observacion_producto
+FROM
+    producto;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1730,7 +1924,50 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listarProveedor`()
 BEGIN
-select idproveedor, nombre_proveedor, rucproveedor, tiporuc, direccion_proveedor, contacto_proveedor, url, cargo_compras from proveedor;
+SELECT 
+    idproveedor,
+    rucproveedor,
+    nombre_proveedor,
+    contacto_proveedor,
+    direccion_proveedor,
+    email_proveedor,
+    celular_proveedor
+FROM
+    proveedor;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listarReceta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listarReceta`(_idproducto INT)
+BEGIN
+SELECT 
+	idreceta,
+    R.idproducto,
+    nombre_producto,
+    R.idmateriaprima,
+    nombre_materia,
+    cantidadmateria,
+    preciomateriacantidad
+FROM
+    receta AS R
+        INNER JOIN
+    producto AS P ON R.idproducto = P.idproducto
+        INNER JOIN
+    materiaprima AS MP ON MP.idmateriaprima = R.idmateriaprima
+WHERE
+    R.idproducto = _idproducto;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1769,7 +2006,14 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listarTrabajador`()
 BEGIN
 SELECT 
-    T.idtrabajador, T.nombre_trabajador, R.rol, T.sueldo_trabajador, T.correo_trabajador, T.usuario_trabajador, T.clave_trabajador
+    T.idtrabajador,
+    T.nombre_trabajador,
+    R.rol,
+    T.correo_trabajador,
+    T.usuario_trabajador,
+    T.clave_trabajador,
+    T.sueldo_trabajador,
+    sueldo_extra
 FROM
     trabajador AS T
         INNER JOIN
@@ -1818,4 +2062,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-09 13:50:37
+-- Dump completed on 2024-10-30  4:20:47

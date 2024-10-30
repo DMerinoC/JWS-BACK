@@ -1,13 +1,15 @@
 <?php
 require_once '../../models/cotizacion.php';
-if (isset($_POST["CodigoCliente"], $_POST["FechaEmision"], $_POST["ObservacionCotizacion"])) {
+
+if (isset($_POST["CodigoCliente"], $_POST["FechaEmision"], $_POST["Estado"], $_POST["PrecioCotizacion"])) {
     $CodigoCliente = $_POST["CodigoCliente"];
     $FechaEmision = $_POST["FechaEmision"];
-    $ObservacionCotizacion = $_POST["ObservacionCotizacion"];
+    $Estado = $_POST["Estado"];
+    $PrecioCotizacion = $_POST["PrecioCotizacion"];
 
-    if (!empty($CodigoCliente) && !empty($FechaEmision) && !empty($ObservacionCotizacion)) {
+    if (!empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado) && !empty($PrecioCotizacion)) {
         // INSTANCIAMOS
-        $cotizacion = new cotizacion("", $CodigoCliente, "", "", $FechaEmision, $ObservacionCotizacion);
+        $cotizacion = new cotizacion("", $CodigoCliente, "", "", "", $FechaEmision, $Estado, $PrecioCotizacion);
         // APLICAMOS GUARDAR
         $resultado = $cotizacion->GuardarCotizacion();
         // MANEJAMOS RESPUESTAS

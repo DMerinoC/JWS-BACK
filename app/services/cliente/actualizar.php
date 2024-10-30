@@ -1,20 +1,17 @@
 <?php
 require_once '../../models/cliente.php';
 
-if (isset($_POST["CodigoCliente"], $_POST["NombreCliente"], $_POST["RucCliente"], $_POST["TipoRuc"], $_POST["NivelInteres"], $_POST["ObservacionCompras"], $_POST["Email"], $_POST["Telefono"], $_POST["Celular"])) {
+if (isset($_POST["CodigoCliente"],$_POST["NombreCliente"], $_POST["Tipo"], $_POST["NumeroDocumento"],  $_POST["Email"], $_POST["Celular"])) {
     $CodigoCliente = $_POST["CodigoCliente"];
+    $Tipo = $_POST["Tipo"];
+    $NumeroDocumento = $_POST["NumeroDocumento"];
     $NombreCliente = $_POST["NombreCliente"];
-    $RucCliente = $_POST["RucCliente"];
-    $TipoRuc = $_POST["TipoRuc"];
-    $NivelInteres = $_POST["NivelInteres"];
-    $ObservacionCompras = $_POST["ObservacionCompras"];
     $Email = $_POST["Email"];
-    $Telefono = $_POST["Telefono"];
     $Celular = $_POST["Celular"];
 
-    if (!empty($CodigoCliente) && !empty($NombreCliente) && !empty($RucCliente) && !empty($TipoRuc) && !empty($NivelInteres) && !empty($ObservacionCompras) && !empty($Email) && !empty($Telefono) && !empty($Celular)) {
+    if (!empty($CodigoCliente) &&!empty($NombreCliente) && !empty($Tipo) && !empty($NumeroDocumento) &&  !empty($Email) && !empty($Celular)) {
         // INSTANCIAMOS
-        $cliente = new cliente($CodigoCliente, $NombreCliente, $RucCliente, $TipoRuc, $NivelInteres, $ObservacionCompras, $Email, $Telefono, $Celular);
+        $cliente = new cliente($CodigoCliente, $Tipo, $NumeroDocumento, $NombreCliente, $Email, $Celular);
         // APLICAMOS GUARDAR
         $resultado = $cliente->ActualizarCliente();
         // MANEJAMOS RESPUESTAS

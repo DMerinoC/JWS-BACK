@@ -5,19 +5,15 @@ class producto
     public $CodigoProducto;
     public $NombreProducto;
     public $PrecioProducto;
-    public $CantidadProducto;
     public $ObservacionProducto;
-    public $ListaPredeterminado;
     private $conexion;
 
-    function __construct($CodigoProducto, $NombreProducto, $PrecioProducto, $CantidadProducto, $ObservacionProducto, $ListaPredeterminado, $iniciarBD = true)
+    function __construct($CodigoProducto, $NombreProducto, $PrecioProducto, $ObservacionProducto, $iniciarBD = true)
     {
         $this->CodigoProducto = $CodigoProducto;
         $this->NombreProducto = $NombreProducto;
         $this->PrecioProducto = $PrecioProducto;
-        $this->CantidadProducto = $CantidadProducto;
         $this->ObservacionProducto = $ObservacionProducto;
-        $this->ListaPredeterminado = $ListaPredeterminado;
         if ($iniciarBD) {
             $this->conexion = new conexion();
         }
@@ -34,9 +30,7 @@ class producto
                 $datos["idproducto"],
                 $datos["nombre_producto"],
                 $datos["precio_producto"],
-                $datos["cantidad_producto"],
                 $datos["observacion_producto"],
-                $datos["lista_predeterminado"],
                 false
             );
             array_push($listarProducto, $producto);
@@ -48,12 +42,10 @@ class producto
         try {
             $NombreProducto = $this->NombreProducto;
             $PrecioProducto = $this->PrecioProducto;
-            $CantidadProducto = $this->CantidadProducto;
             $ObservacionProducto = $this->ObservacionProducto;
-            $ListaPredeterminado = $this->ListaPredeterminado;
-            $sql = "CALL crearProducto(?, ?, ?, ?, ?);";
+            $sql = "CALL crearProducto(?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$NombreProducto, $PrecioProducto, $CantidadProducto, $ObservacionProducto, $ListaPredeterminado]);
+            $stmt->execute([$NombreProducto, $PrecioProducto, $ObservacionProducto]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -86,12 +78,10 @@ class producto
             $CodigoProducto = $this->CodigoProducto;
             $NombreProducto = $this->NombreProducto;
             $PrecioProducto = $this->PrecioProducto;
-            $CantidadProducto = $this->CantidadProducto;
             $ObservacionProducto = $this->ObservacionProducto;
-            $ListaPredeterminado = $this->ListaPredeterminado;
-            $sql = "CALL actualizarProducto(?, ?, ?, ?, ?, ?);";
+            $sql = "CALL actualizarProducto(?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoProducto, $NombreProducto, $PrecioProducto, $CantidadProducto, $ObservacionProducto, $ListaPredeterminado]);
+            $stmt->execute([$CodigoProducto, $NombreProducto, $PrecioProducto, $ObservacionProducto]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

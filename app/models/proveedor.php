@@ -3,25 +3,23 @@ require_once '../../config/conexion.php';
 class proveedor
 {
     public $CodigoProveedor;
-    public $NombreProveedor;
     public $RucProveedor;
-    public $TipoRucProveedor;
-    public $DireccionProveedor;
+    public $NombreProveedor;
     public $ContactoProveedor;
-    public $UrlProveedor;
-    public $CargoCompras;
+    public $DireccionProveedor;
+    public $EmailProveedor;
+    public $CelularProveedor;
     private $conexion;
 
-    function __construct($CodigoProveedor, $NombreProveedor, $RucProveedor, $TipoRucProveedor, $DireccionProveedor, $ContactoProveedor, $UrlProveedor, $CargoCompras, $iniciarBD = true)
+    function __construct($CodigoProveedor, $RucProveedor, $NombreProveedor, $ContactoProveedor, $DireccionProveedor, $EmailProveedor, $CelularProveedor, $iniciarBD = true)
     {
         $this->CodigoProveedor = $CodigoProveedor;
-        $this->NombreProveedor = $NombreProveedor;
         $this->RucProveedor = $RucProveedor;
-        $this->TipoRucProveedor = $TipoRucProveedor;
-        $this->DireccionProveedor = $DireccionProveedor;
+        $this->NombreProveedor = $NombreProveedor;
         $this->ContactoProveedor = $ContactoProveedor;
-        $this->UrlProveedor = $UrlProveedor;
-        $this->CargoCompras = $CargoCompras;
+        $this->DireccionProveedor = $DireccionProveedor;
+        $this->EmailProveedor = $EmailProveedor;
+        $this->CelularProveedor = $CelularProveedor;
         if ($iniciarBD) {
             $this->conexion = new conexion();
         }
@@ -36,13 +34,12 @@ class proveedor
         while ($datos = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $Proveedor = new proveedor(
                 $datos["idproveedor"],
-                $datos["nombre_proveedor"],
                 $datos["rucproveedor"],
-                $datos["tiporuc"],
-                $datos["direccion_proveedor"],
+                $datos["nombre_proveedor"],
                 $datos["contacto_proveedor"],
-                $datos["url"],
-                $datos["cargo_compras"],
+                $datos["direccion_proveedor"],
+                $datos["email_proveedor"],
+                $datos["celular_proveedor"],
                 false
             );
             array_push($listarProveedor, $Proveedor);
@@ -52,16 +49,15 @@ class proveedor
     public function GuardarProveedor()
     {
         try {
-            $NombreProveedor = $this->NombreProveedor;
             $RucProveedor = $this->RucProveedor;
-            $TipoRucProveedor = $this->TipoRucProveedor;
-            $DireccionProveedor = $this->DireccionProveedor;
+            $NombreProveedor = $this->NombreProveedor;
             $ContactoProveedor = $this->ContactoProveedor;
-            $UrlProveedor = $this->UrlProveedor;
-            $CargoCompras = $this->CargoCompras;
-            $sql = "CALL crearProveedor(?, ?, ?, ?, ?, ?, ?);";
+            $DireccionProveedor = $this->DireccionProveedor;
+            $EmailProveedor = $this->EmailProveedor;
+            $CelularProveedor = $this->CelularProveedor;
+            $sql = "CALL crearProveedor(?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$RucProveedor, $TipoRucProveedor, $NombreProveedor, $UrlProveedor, $CargoCompras, $DireccionProveedor, $ContactoProveedor]);
+            $stmt->execute([$RucProveedor, $NombreProveedor, $ContactoProveedor, $DireccionProveedor, $EmailProveedor, $CelularProveedor]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -91,16 +87,15 @@ class proveedor
     {
         try {
             $CodigoProveedor = $this->CodigoProveedor;
-            $NombreProveedor = $this->NombreProveedor;
             $RucProveedor = $this->RucProveedor;
-            $TipoRucProveedor = $this->TipoRucProveedor;
-            $DireccionProveedor = $this->DireccionProveedor;
+            $NombreProveedor = $this->NombreProveedor;
             $ContactoProveedor = $this->ContactoProveedor;
-            $UrlProveedor = $this->UrlProveedor;
-            $CargoCompras = $this->CargoCompras;
-            $sql = "CALL actualizarProveedor(?, ?, ?, ?, ?, ?, ?, ?);";
+            $DireccionProveedor = $this->DireccionProveedor;
+            $EmailProveedor = $this->EmailProveedor;
+            $CelularProveedor = $this->CelularProveedor;
+            $sql = "CALL actualizarProveedor(?, ?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoProveedor, $RucProveedor, $TipoRucProveedor, $NombreProveedor, $UrlProveedor, $CargoCompras, $DireccionProveedor, $ContactoProveedor]);
+            $stmt->execute([$CodigoProveedor, $RucProveedor, $NombreProveedor, $ContactoProveedor, $DireccionProveedor, $EmailProveedor, $CelularProveedor]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

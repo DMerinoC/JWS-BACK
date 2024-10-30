@@ -1,17 +1,17 @@
 <?php
 require_once '../../models/proveedor.php';
-if (isset($_POST["CodigoProveedor"], $_POST["NombreProveedor"], $_POST["RucProveedor"], $_POST["TipoRucProveedor"], $_POST["DireccionProveedor"], $_POST["ContactoProveedor"], $_POST["UrlProveedor"], $_POST["CargoCompras"])) {
+if (isset($_POST["CodigoProveedor"], $_POST["NombreProveedor"], $_POST["RucProveedor"], $_POST["DireccionProveedor"], $_POST["ContactoProveedor"], $_POST["EmailProveedor"], $_POST["CelularProveedor"])) {
     $CodigoProveedor = $_POST["CodigoProveedor"];
     $NombreProveedor = $_POST["NombreProveedor"];
     $RucProveedor = $_POST["RucProveedor"];
-    $TipoRucProveedor = $_POST["TipoRucProveedor"];
     $DireccionProveedor = $_POST["DireccionProveedor"];
     $ContactoProveedor = $_POST["ContactoProveedor"];
-    $UrlProveedor = $_POST["UrlProveedor"];
-    $CargoCompras = $_POST["CargoCompras"];
-    if (!empty($CodigoProveedor) && !empty($NombreProveedor) && !empty($RucProveedor) && !empty($TipoRucProveedor) && !empty($DireccionProveedor) && !empty($ContactoProveedor) && !empty($UrlProveedor) && !empty($CargoCompras)) {
+    $EmailProveedor = $_POST["EmailProveedor"];
+    $CelularProveedor = $_POST["CelularProveedor"];
+
+    if (!empty($CodigoProveedor) && !empty($NombreProveedor) && !empty($RucProveedor) && !empty($EmailProveedor) && !empty($DireccionProveedor) && !empty($ContactoProveedor) && !empty($CelularProveedor)) {
         // INSTANCIAMOS
-        $proveedor = new proveedor($CodigoProveedor, $NombreProveedor, $RucProveedor, $TipoRucProveedor, $DireccionProveedor, $ContactoProveedor, $UrlProveedor, $CargoCompras);
+        $proveedor = new proveedor($CodigoProveedor, $RucProveedor, $NombreProveedor, $ContactoProveedor, $DireccionProveedor, $EmailProveedor, $CelularProveedor);
         // APLICAMOS GUARDAR
         $resultado = $proveedor->ActualizarProveedor();
         // MANEJAMOS RESPUESTAS

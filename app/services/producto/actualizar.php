@@ -1,15 +1,13 @@
 <?php
 require_once '../../models/producto.php';
-if (isset($_POST["CodigoProducto"], $_POST["NombreProducto"], $_POST["PrecioProducto"], $_POST["CantidadProducto"], $_POST["ObservacionProducto"], $_POST["ListaPredeterminado"])) {
+if (isset($_POST["CodigoProducto"], $_POST["NombreProducto"], $_POST["PrecioProducto"], $_POST["ObservacionProducto"])) {
     $CodigoProducto = $_POST["CodigoProducto"];
     $NombreProducto = $_POST["NombreProducto"];
     $PrecioProducto = $_POST["PrecioProducto"];
-    $CantidadProducto = $_POST["CantidadProducto"];
     $ObservacionProducto = $_POST["ObservacionProducto"];
-    $ListaPredeterminado = $_POST["ListaPredeterminado"];
 
-    if (!empty($CodigoProducto) && !empty($NombreProducto) && !empty($PrecioProducto) && !empty($CantidadProducto) && !empty($ObservacionProducto) && !empty($ListaPredeterminado)) {
-        $producto = new producto($CodigoProducto, $NombreProducto, $PrecioProducto, $CantidadProducto, $ObservacionProducto, $ListaPredeterminado);
+    if (!empty($CodigoProducto) && !empty($NombreProducto) && !empty($PrecioProducto)&& !empty($ObservacionProducto)) {
+        $producto = new producto($CodigoProducto, $NombreProducto, $PrecioProducto, $ObservacionProducto);
         $resultado = $producto->ActualizarProducto();
         if (is_array($resultado) && count($resultado) > 0 && isset($resultado[0]['mensaje']) && $resultado[0]['mensaje'] == 'El Producto ya existe') {
             echo json_encode(['mensaje' => 'El Producto ya existe']);

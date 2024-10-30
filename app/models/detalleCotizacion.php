@@ -28,20 +28,20 @@ class detalleCotizacion
             $this->conexion = new conexion();
         }
     }
-    public static function Listar($idcotizacion, $fecha_emision)
+    public static function Listar($idcotizacion)
     {
         $listarDetalle = [];
         $conexion = new conexion();
-        $sql = "CALL listarDetalleCotizacion(:idcotizacion, :fecha_emision);";
+        $sql = "CALL listarDetalleCotizacion(:idcotizacion);";
         $stmt = $conexion->prepare($sql);
         $stmt->bindParam(':idcotizacion', $idcotizacion, PDO::PARAM_INT);
-        $stmt->bindParam(':fecha_emision', $fecha_emision);
         $stmt->execute();
         while ($datos = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $detalleCotizacion = new detalleCotizacion(
+                $datos["iddetallecotizacion"],
                 $datos["idcotizacion"],
                 "",
-                "",
+                $datos["nombre_producto"],
                 $datos["precio_producto"],
                 $datos["cantidad"],
                 $datos["precio"],
@@ -59,10 +59,11 @@ class detalleCotizacion
             $CodigoCotizacion = $this->CodigoCotizacion;
             $CodigoProducto = $this->CodigoProducto;
             $CantidadDetalleCotizacion = $this->CantidadDetalleCotizacion;
+            $PrecioDetalleCotizacion = $this->PrecioDetalleCotizacion;
             $ObservacionDetalleCotizacion = $this->ObservacionDetalleCotizacion;
-            $sql = "CALL crearDetalleCotizacion(?, ?, ?, ?);";
+            $sql = "CALL crearDetalleCotizacion(?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCotizacion, $CodigoProducto, $CantidadDetalleCotizacion, $ObservacionDetalleCotizacion]);
+            $stmt->execute([$CodigoCotizacion, $CodigoProducto, $CantidadDetalleCotizacion, $PrecioDetalleCotizacion, $ObservacionDetalleCotizacion]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -96,10 +97,11 @@ class detalleCotizacion
             $CodigoCotizacion = $this->CodigoCotizacion;
             $CodigoProducto = $this->CodigoProducto;
             $CantidadDetalleCotizacion = $this->CantidadDetalleCotizacion;
+            $PrecioDetalleCotizacion = $this->PrecioDetalleCotizacion;
             $ObservacionDetalleCotizacion = $this->ObservacionDetalleCotizacion;
-            $sql = "CALL actualizarDetalleCotizacion(?, ?, ?, ?, ?);";
+            $sql = "CALL actualizarDetalleCotizacion(?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoDetalleCotizacion, $CodigoCotizacion, $CodigoProducto, $CantidadDetalleCotizacion, $ObservacionDetalleCotizacion]);
+            $stmt->execute([$CodigoDetalleCotizacion, $CodigoCotizacion, $CodigoProducto, $CantidadDetalleCotizacion, $PrecioDetalleCotizacion, $ObservacionDetalleCotizacion]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

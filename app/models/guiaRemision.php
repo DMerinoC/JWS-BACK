@@ -4,20 +4,20 @@ class remision
 {
     public $CodigoRemision;
     public $CodigoCotizacion;
-    public $CodigoCliente;
     public $NombreCliente;
+    public $Garantia;
     public $FechaEmisionRemision;
-    public $ObservacionRemision;
+    public $EstadoGuia;
     private $conexion;
 
-    function __construct($CodigoRemision, $CodigoCotizacion, $CodigoCliente, $NombreCliente, $FechaEmisionRemision, $ObservacionRemision, $iniciarBD = true)
+    function __construct($CodigoRemision, $CodigoCotizacion, $NombreCliente, $Garantia, $FechaEmisionRemision, $EstadoGuia, $iniciarBD = true)
     {
         $this->CodigoRemision = $CodigoRemision;
         $this->CodigoCotizacion = $CodigoCotizacion;
-        $this->CodigoCliente = $CodigoCliente;
         $this->NombreCliente = $NombreCliente;
+        $this->Garantia = $Garantia;
         $this->FechaEmisionRemision = $FechaEmisionRemision;
-        $this->ObservacionRemision = $ObservacionRemision;
+        $this->EstadoGuia = $EstadoGuia;
         if ($iniciarBD) {
             $this->conexion = new conexion();
         }
@@ -33,10 +33,10 @@ class remision
             $remision = new remision(
                 $datos["idguiaremision"],
                 $datos["idcotizacion"],
-                $datos["idcliente"],
                 $datos["nombre_cliente"],
+                $datos["garantia"],
                 $datos["fecha_emision"],
-                $datos["observacion"],
+                $datos["estado_guia"],
                 false
             );
             array_push($listarRemision, $remision);
@@ -47,11 +47,12 @@ class remision
     {
         try {
             $CodigoCotizacion = $this->CodigoCotizacion;
+            $Garantia = $this->Garantia;
             $FechaEmisionRemision = $this->FechaEmisionRemision;
-            $ObservacionRemision = $this->ObservacionRemision;
-            $sql = "CALL crearGuiaRemision(?, ?, ?);";
+            $EstadoGuia = $this->EstadoGuia;
+            $sql = "CALL crearGuiaRemision(?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCotizacion, $FechaEmisionRemision, $ObservacionRemision]);
+            $stmt->execute([$CodigoCotizacion, $Garantia, $FechaEmisionRemision, $EstadoGuia]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -83,11 +84,12 @@ class remision
         try {
             $CodigoRemision = $this->CodigoRemision;
             $CodigoCotizacion = $this->CodigoCotizacion;
+            $Garantia = $this->Garantia;
             $FechaEmisionRemision = $this->FechaEmisionRemision;
-            $ObservacionRemision = $this->ObservacionRemision;
-            $sql = "CALL actualizarGuiaRemision( ?, ?, ?, ?);";
+            $EstadoGuia = $this->EstadoGuia;
+            $sql = "CALL actualizarGuiaRemision( ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoRemision, $CodigoCotizacion, $FechaEmisionRemision, $ObservacionRemision]);
+            $stmt->execute([$CodigoRemision, $CodigoCotizacion, $Garantia, $FechaEmisionRemision, $EstadoGuia]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

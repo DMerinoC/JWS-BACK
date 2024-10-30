@@ -6,18 +6,22 @@ class cotizacion
     public $CodigoCliente;
     public $NombreCliente;
     public $CelularCliente;
+    public $EmailCliente;
     public $FechaEmision;
-    public $ObservacionCotizacion;
+    public $Estado;
+    public $PrecioCotizacion;
     private $conexion;
 
-    function __construct($CodigoCotizacion, $CodigoCliente, $NombreCliente, $CelularCliente, $FechaEmision, $ObservacionCotizacion, $iniciarBD = true)
+    function __construct($CodigoCotizacion, $CodigoCliente, $NombreCliente, $CelularCliente, $EmailCliente, $FechaEmision, $Estado, $PrecioCotizacion, $iniciarBD = true)
     {
         $this->CodigoCotizacion = $CodigoCotizacion;
         $this->CodigoCliente = $CodigoCliente;
         $this->NombreCliente = $NombreCliente;
         $this->CelularCliente = $CelularCliente;
+        $this->EmailCliente = $EmailCliente;
         $this->FechaEmision = $FechaEmision;
-        $this->ObservacionCotizacion = $ObservacionCotizacion;
+        $this->Estado = $Estado;
+        $this->PrecioCotizacion = $PrecioCotizacion;
         if ($iniciarBD) {
             $this->conexion = new conexion();
         }
@@ -32,10 +36,13 @@ class cotizacion
         while ($datos = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $cotizacion = new cotizacion(
                 $datos["idcotizacion"],
+                $datos["idcliente"],
                 $datos["nombre_cliente"],
                 $datos["celular_cliente"],
+                $datos["email_cliente"],
                 $datos["fecha_emision"],
-                $datos["observacion"],
+                $datos["estado"],
+                $datos["precio_cotizacion"],
                 false
             );
             array_push($listarCotizacion, $cotizacion);
@@ -47,10 +54,11 @@ class cotizacion
         try {
             $CodigoCliente = $this->CodigoCliente;
             $FechaEmision = $this->FechaEmision;
-            $ObservacionCotizacion = $this->ObservacionCotizacion;
-            $sql = "CALL crearcotizacion(?, ?, ?);";
+            $Estado = $this->Estado;
+            $PrecioCotizacion = $this->PrecioCotizacion;
+            $sql = "CALL crearcotizacion(?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCliente, $FechaEmision, $ObservacionCotizacion]);
+            $stmt->execute([$CodigoCliente, $FechaEmision, $Estado, $PrecioCotizacion]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -83,10 +91,11 @@ class cotizacion
             $CodigoCotizacion = $this->CodigoCotizacion;
             $CodigoCliente = $this->CodigoCliente;
             $FechaEmision = $this->FechaEmision;
-            $ObservacionCotizacion = $this->ObservacionCotizacion;
-            $sql = "CALL actualizarCotizacion(?, ?, ?, ?);";
+            $Estado = $this->Estado;
+            $PrecioCotizacion = $this->PrecioCotizacion;
+            $sql = "CALL actualizarCotizacion(?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCotizacion, $CodigoCliente, $FechaEmision, $ObservacionCotizacion]);
+            $stmt->execute([$CodigoCotizacion, $CodigoCliente, $FechaEmision, $Estado, $PrecioCotizacion]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

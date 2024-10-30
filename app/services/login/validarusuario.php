@@ -24,8 +24,7 @@ if (!$UsuarioTrabajador || !$ClaveTrabajador) {
     http_response_code(400);
     exit;
 }
-
-$usuario = new trabajador(0, "", "", "", $UsuarioTrabajador, "", "", "");
+$usuario = new trabajador(0, "", "", "", $UsuarioTrabajador, "", "", "", "");
 $usuario->ClaveTrabajador = $ClaveTrabajador;
 $usuarioValidado = $usuario->Validar();
 

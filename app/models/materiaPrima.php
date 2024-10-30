@@ -3,27 +3,27 @@ require_once '../../config/conexion.php';
 class materia
 {
     public $CodigoMateriaPrima;
+    public $CodigoProveedor;
     public $NombreMateriaPrima;
     public $PrecioMateriaPrima;
     public $CantidadMateriaPrima;
     public $UnidadMateriaPrima;
-    public $CodigoProveedor;
     public $NombreProveedor;
     public $DescripcionMateriaPrima;
-    public $ListaPredeMateriaPrima;
+    public $TipoMateria;
     private $conexion;
 
-    function __construct($CodigoMateriaPrima, $NombreMateriaPrima, $PrecioMateriaPrima, $CantidadMateriaPrima, $UnidadMateriaPrima, $CodigoProveedor, $NombreProveedor, $DescripcionMateriaPrima, $ListaPredeMateriaPrima, $iniciarBD = true)
+    function __construct($CodigoMateriaPrima, $CodigoProveedor, $NombreMateriaPrima, $PrecioMateriaPrima, $CantidadMateriaPrima, $UnidadMateriaPrima, $NombreProveedor, $DescripcionMateriaPrima, $TipoMateria, $iniciarBD = true)
     {
         $this->CodigoMateriaPrima = $CodigoMateriaPrima;
+        $this->CodigoProveedor = $CodigoProveedor;
         $this->NombreMateriaPrima = $NombreMateriaPrima;
         $this->PrecioMateriaPrima = $PrecioMateriaPrima;
         $this->CantidadMateriaPrima = $CantidadMateriaPrima;
         $this->UnidadMateriaPrima = $UnidadMateriaPrima;
-        $this->CodigoProveedor = $CodigoProveedor;
         $this->NombreProveedor = $NombreProveedor;
         $this->DescripcionMateriaPrima = $DescripcionMateriaPrima;
-        $this->ListaPredeMateriaPrima = $ListaPredeMateriaPrima;
+        $this->TipoMateria = $TipoMateria;
         if ($iniciarBD) {
             $this->conexion = new conexion();
         }
@@ -38,14 +38,14 @@ class materia
         while ($datos = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $materia = new materia(
                 $datos["idmateriaprima"],
+                "",
                 $datos["nombre_materia"],
                 $datos["precio_materia"],
                 $datos["cantidad_materia"],
                 $datos["unidadmedida"],
-                "",
                 $datos["nombre_proveedor"],
                 $datos["descripcion"],
-                $datos["lista_predeterminado"],
+                $datos["tipo_materia"],
                 false
             );
             array_push($listarMateria, $materia);
@@ -55,16 +55,16 @@ class materia
     public function GuardarMateria()
     {
         try {
+            $CodigoProveedor = $this->CodigoProveedor;
             $NombreMateriaPrima = $this->NombreMateriaPrima;
             $PrecioMateriaPrima = $this->PrecioMateriaPrima;
             $CantidadMateriaPrima = $this->CantidadMateriaPrima;
             $UnidadMateriaPrima = $this->UnidadMateriaPrima;
-            $CodigoProveedor = $this->CodigoProveedor;
             $DescripcionMateriaPrima = $this->DescripcionMateriaPrima;
-            $ListaPredeMateriaPrima = $this->ListaPredeMateriaPrima;
+            $TipoMateria = $this->TipoMateria;
             $sql = "CALL crearMateriaPrima(?, ?, ?,?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoProveedor, $NombreMateriaPrima, $PrecioMateriaPrima, $CantidadMateriaPrima, $UnidadMateriaPrima, $DescripcionMateriaPrima, $ListaPredeMateriaPrima]);
+            $stmt->execute([$CodigoProveedor, $NombreMateriaPrima, $PrecioMateriaPrima, $CantidadMateriaPrima, $UnidadMateriaPrima, $DescripcionMateriaPrima, $TipoMateria]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -95,16 +95,16 @@ class materia
     {
         try {
             $CodigoMateriaPrima = $this->CodigoMateriaPrima;
+            $CodigoProveedor = $this->CodigoProveedor;
             $NombreMateriaPrima = $this->NombreMateriaPrima;
             $PrecioMateriaPrima = $this->PrecioMateriaPrima;
             $CantidadMateriaPrima = $this->CantidadMateriaPrima;
             $UnidadMateriaPrima = $this->UnidadMateriaPrima;
-            $CodigoProveedor = $this->CodigoProveedor;
             $DescripcionMateriaPrima = $this->DescripcionMateriaPrima;
-            $ListaPredeMateriaPrima = $this->ListaPredeMateriaPrima;
+            $TipoMateria = $this->TipoMateria;
             $sql = "CALL actualizarMateriaPrima( ?, ?, ?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoMateriaPrima, $CodigoProveedor, $NombreMateriaPrima, $PrecioMateriaPrima, $CantidadMateriaPrima, $UnidadMateriaPrima, $DescripcionMateriaPrima, $ListaPredeMateriaPrima]);
+            $stmt->execute([$CodigoMateriaPrima, $CodigoProveedor, $NombreMateriaPrima, $PrecioMateriaPrima, $CantidadMateriaPrima, $UnidadMateriaPrima, $DescripcionMateriaPrima, $TipoMateria]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);
