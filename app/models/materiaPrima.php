@@ -115,4 +115,9 @@ class materia
             return false;
         }
     }
+    public function descontarMateriales()
+    {
+
+    }
+
 }

@@ -1,15 +1,31 @@
 <?php
 require_once '../../models/cotizacion.php';
-if (isset($_POST["CodigoCotizacion"], $_POST["CodigoCliente"], $_POST["FechaEmision"], $_POST["Estado"], $_POST["PrecioCotizacion"])) {
+require_once '../../models/ordenTrabajo.php';
+date_default_timezone_set('America/Lima');
+if (isset($_POST["CodigoCotizacion"], $_POST["CodigoCliente"], $_POST["FechaEmision"], $_POST["Estado"])) {
     $CodigoCotizacion = $_POST["CodigoCotizacion"];
     $CodigoCliente = $_POST["CodigoCliente"];
     $FechaEmision = $_POST["FechaEmision"];
     $Estado = $_POST["Estado"];
-    $PrecioCotizacion = $_POST["PrecioCotizacion"];
+    $CodigoTrabajador = $_POST["CodigoTrabajador"];
 
-    if (!empty($CodigoCotizacion) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado) && !empty($PrecioCotizacion)) {
+    if ($Estado == "Aprobado") {
+        $orden = new orden(
+            "",
+            $CodigoCotizacion,
+            $CodigoTrabajador,
+            "",
+            "",
+            date('Y-m-d H:i:s', time()),
+            date('Y-m-d H:i:s', strtotime('+2 months', strtotime(date('Y-m-d H:i:s', time())))),
+            "Inicial"
+        );
+        $agregado = $orden->GuardarOrden();
+    }
+
+    if (!empty($CodigoCotizacion) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado)) {
         // INSTANCIAMOS
-        $cotizacion = new cotizacion($CodigoCotizacion, $CodigoCliente, "", "", "", $FechaEmision, $Estado, $PrecioCotizacion);
+        $cotizacion = new cotizacion($CodigoCotizacion, $CodigoCliente, "", "", "", $FechaEmision, $Estado);
         // APLICAMOS GUARDAR
         $resultado = $cotizacion->ActualizarCotizacion();
         // MANEJAMOS RESPUESTAS

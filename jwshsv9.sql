@@ -113,11 +113,10 @@ CREATE TABLE `cotizacion` (
   `idcliente` int DEFAULT NULL,
   `fecha_emision` timestamp NULL DEFAULT NULL,
   `estado` varchar(225) DEFAULT NULL,
-  `precio_cotizacion` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`idcotizacion`),
   KEY `idcliente` (`idcliente`),
   CONSTRAINT `cotizacion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +125,7 @@ CREATE TABLE `cotizacion` (
 
 LOCK TABLES `cotizacion` WRITE;
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
-INSERT INTO `cotizacion` VALUES (1,1,'2024-10-02 05:00:00','Activado',20.00),(2,2,'2024-11-02 05:00:00','Desactivado',20.00),(4,2,'2024-11-05 05:00:00','Activo',200.00);
+INSERT INTO `cotizacion` VALUES (1,1,'2024-10-02 05:00:00','Activado'),(2,2,'2024-11-02 05:00:00','Desactivado'),(4,1,'2024-10-12 05:00:00','Aprobado'),(13,4,'2024-11-03 22:24:54','Activo'),(14,4,'2024-11-05 03:14:27','Activo'),(15,4,'2024-11-05 03:15:05','Activo'),(16,4,'2024-11-05 03:29:13','Activo'),(17,4,'2024-11-05 03:29:48','Activo'),(18,4,'2024-11-05 03:29:50','desocupado'),(19,4,'2024-11-05 03:41:56','Activo'),(20,4,'2024-11-05 03:42:22','Activo'),(21,4,'2024-11-05 03:42:52','Activo'),(22,4,'2024-11-05 03:43:47','Activo'),(23,4,'2024-11-05 03:44:01','Activo'),(24,4,'2024-11-05 03:44:19','Activo');
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +148,7 @@ CREATE TABLE `detallecotizacion` (
   KEY `idproducto` (`idproducto`),
   CONSTRAINT `detallecotizacion_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`),
   CONSTRAINT `detallecotizacion_ibfk_2` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +157,7 @@ CREATE TABLE `detallecotizacion` (
 
 LOCK TABLES `detallecotizacion` WRITE;
 /*!40000 ALTER TABLE `detallecotizacion` DISABLE KEYS */;
-INSERT INTO `detallecotizacion` VALUES (1,1,2,3,224.00,'Sin problemas'),(2,1,1,2,222.00,'Sin problemas');
+INSERT INTO `detallecotizacion` VALUES (1,1,2,3,224.00,'Sin problemas'),(2,1,1,2,222.00,'Sin problemas'),(4,13,5,2,222.00,'Sin problemas'),(5,13,1,2,222.00,'Sin problemas'),(6,13,2,2,222.00,'Sin problemas');
 /*!40000 ALTER TABLE `detallecotizacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +218,7 @@ CREATE TABLE `materiaprima` (
 
 LOCK TABLES `materiaprima` WRITE;
 /*!40000 ALTER TABLE `materiaprima` DISABLE KEYS */;
-INSERT INTO `materiaprima` VALUES (1,1,'Materia Prima 1',150.00,600,'kg','Materia de origen nacional','Para camas'),(3,4,'Materia Prima 2',1000.00,150,'Und.','Materia de origen Internacional','Para todo uso'),(4,3,'Materia Prima 4',100.00,15,'Und.','Materia de origen Internacional','Para todo uso'),(5,5,'Materia Prima 5',100.00,159,'Und.','Materia de origen Nacional','Para todo uso');
+INSERT INTO `materiaprima` VALUES (1,1,'Materia Prima 1',150.00,538,'kg','Materia de origen nacional','Para camas'),(3,4,'Materia Prima 2',1000.00,88,'Und.','Materia de origen Internacional','Para todo uso'),(4,5,'Materia Prima 4',150.00,153,'Und.','Materia de origen Internacional','Para todo uso'),(5,5,'Materia Prima 5',100.00,153,'Und.','Materia de origen Nacional','Para todo uso');
 /*!40000 ALTER TABLE `materiaprima` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,7 +241,7 @@ CREATE TABLE `ordentrabajo` (
   KEY `idtrabajador` (`idtrabajador`),
   CONSTRAINT `ordentrabajo_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`),
   CONSTRAINT `ordentrabajo_ibfk_2` FOREIGN KEY (`idtrabajador`) REFERENCES `trabajador` (`idtrabajador`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -251,7 +250,7 @@ CREATE TABLE `ordentrabajo` (
 
 LOCK TABLES `ordentrabajo` WRITE;
 /*!40000 ALTER TABLE `ordentrabajo` DISABLE KEYS */;
-INSERT INTO `ordentrabajo` VALUES (2,2,2,'2024-02-02 05:00:00','2024-05-12 05:00:00','En pausa');
+INSERT INTO `ordentrabajo` VALUES (2,2,2,'2024-02-02 05:00:00','2024-05-12 05:00:00','En pausa'),(4,4,3,'2024-11-03 21:42:02','2025-01-03 21:42:02','Inicial');
 /*!40000 ALTER TABLE `ordentrabajo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -328,7 +327,7 @@ CREATE TABLE `receta` (
   KEY `idmateriaprima` (`idmateriaprima`),
   CONSTRAINT `receta_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
   CONSTRAINT `receta_ibfk_2` FOREIGN KEY (`idmateriaprima`) REFERENCES `materiaprima` (`idmateriaprima`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,6 +336,7 @@ CREATE TABLE `receta` (
 
 LOCK TABLES `receta` WRITE;
 /*!40000 ALTER TABLE `receta` DISABLE KEYS */;
+INSERT INTO `receta` VALUES (1,3,20,20.00,8),(1,1,20,20.00,9),(2,1,2,300.00,18),(2,4,2,200.00,19),(2,3,2,2000.00,20),(5,5,2,200.00,21),(5,4,1,100.00,22);
 /*!40000 ALTER TABLE `receta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -526,18 +526,44 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarCotizacion`(
     _idcotizacion INT,
     _idcliente INT,
     _fecha_emision timestamp,
-    _estado VARCHAR(225),
-    _precio_cotizacion DECIMAL(10,2)
+    _estado VARCHAR(225)
     )
 BEGIN
     START TRANSACTION;
         BEGIN
+			UPDATE materiaprima AS MP
+			INNER JOIN receta AS R ON MP.idmateriaprima = R.idmateriaprima
+			INNER JOIN producto AS P ON R.idproducto = P.idproducto
+			INNER JOIN detallecotizacion AS DC ON P.idproducto = DC.idproducto
+			INNER JOIN cotizacion AS C ON DC.idcotizacion = C.idcotizacion
+			LEFT JOIN (
+				SELECT 
+					MP2.idmateriaprima, 
+					SUM(MP2.cantidad_materia) AS suma_cantidad_materia,
+					SUM(R2.cantidadmateria) AS suma_cantidadmateria
+				FROM
+					materiaprima AS MP2
+				INNER JOIN receta AS R2 ON MP2.idmateriaprima = R2.idmateriaprima
+				INNER JOIN producto AS P2 ON R2.idproducto = P2.idproducto
+				INNER JOIN detallecotizacion AS DC2 ON P2.idproducto = DC2.idproducto
+				INNER JOIN cotizacion AS C2 ON DC2.idcotizacion = C2.idcotizacion
+				WHERE
+					C2.estado = 'Activo'
+					AND C2.idcotizacion = _idcotizacion
+				GROUP BY 
+					MP2.idmateriaprima
+			) AS sumas ON MP.idmateriaprima = sumas.idmateriaprima
+			SET 
+				MP.cantidad_materia = MP.cantidad_materia - sumas.suma_cantidadmateria
+			WHERE
+				C.estado = 'Activo'
+				AND C.idcotizacion = _idcotizacion;
+
 			UPDATE cotizacion 
 			SET
             idcliente = _idcliente,
             fecha_emision = _fecha_emision,
-            estado = _estado,
-            precio_cotizacion=_precio_cotizacion
+            estado = _estado
             where idcotizacion=_idcotizacion;
 			SELECT 'Cotizacion actualizada correctamente' AS mensaje;
 		END;
@@ -997,13 +1023,12 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearcotizacion`(
     _idcliente INT,
     _fecha_emision timestamp,
-    _estado VARCHAR(225),
-    _precio_cotizacion DECIMAL(10,2)
+    _estado VARCHAR(225)
     )
 BEGIN
-	INSERT INTO cotizacion (idcliente, fecha_emision, estado, precio_cotizacion) 
-	VALUES (_idcliente, _fecha_emision, _estado,_precio_cotizacion);
-	SELECT 'Cotizacion insertado correctamente' AS mensaje;
+	INSERT INTO cotizacion (idcliente, fecha_emision, estado) 
+	VALUES (_idcliente, _fecha_emision, _estado);
+    select idcotizacion from cotizacion where idcliente=_idcliente and fecha_emision=_fecha_emision;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1746,7 +1771,6 @@ SELECT
     CO.idcliente,
     fecha_emision,
     estado,
-    precio_cotizacion,
     nombre_cliente,
     celular_cliente,
     email_cliente
@@ -2062,4 +2086,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-30  4:20:47
+-- Dump completed on 2024-11-05  1:17:51
