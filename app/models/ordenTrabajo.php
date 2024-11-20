@@ -10,9 +10,10 @@ class orden
     public $FechaEmisionOrden;
     public $FechaMaximaEntrega;
     public $EstadoOrden;
+    public $EstadoProduccion;
     private $conexion;
 
-    function __construct($CodigoOrdenTrabajo, $CodigoCotizacion, $CodigoTrabajador, $NombreTrabajador, $SueldoTrabajador, $FechaEmisionOrden, $FechaMaximaEntrega, $EstadoOrden, $iniciarBD = true)
+    function __construct($CodigoOrdenTrabajo, $CodigoCotizacion, $CodigoTrabajador, $NombreTrabajador, $SueldoTrabajador, $FechaEmisionOrden, $FechaMaximaEntrega, $EstadoOrden, $EstadoProduccion, $iniciarBD = true)
     {
         $this->CodigoOrdenTrabajo = $CodigoOrdenTrabajo;
         $this->CodigoCotizacion = $CodigoCotizacion;
@@ -22,6 +23,7 @@ class orden
         $this->FechaEmisionOrden = $FechaEmisionOrden;
         $this->FechaMaximaEntrega = $FechaMaximaEntrega;
         $this->EstadoOrden = $EstadoOrden;
+        $this->EstadoProduccion = $EstadoProduccion;
         if ($iniciarBD) {
             $this->conexion = new conexion();
         }
@@ -43,6 +45,7 @@ class orden
                 $datos["fecha_emision"],
                 $datos["fecha_maxima_entrega"],
                 $datos["estado_orden"],
+                $datos["estado_produccion"],
                 false
             );
             array_push($listarOrden, $orden);
@@ -57,9 +60,10 @@ class orden
             $FechaEmisionOrden = $this->FechaEmisionOrden;
             $FechaMaximaEntrega = $this->FechaMaximaEntrega;
             $EstadoOrden = $this->EstadoOrden;
-            $sql = "CALL crearOrdenTrabajo(?, ?, ?, ?, ?);";
+            $EstadoProduccion = $this->EstadoProduccion;
+            $sql = "CALL crearOrdenTrabajo(?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCotizacion, $CodigoTrabajador, $FechaEmisionOrden, $FechaMaximaEntrega, $EstadoOrden]);
+            $stmt->execute([$CodigoCotizacion, $CodigoTrabajador, $FechaEmisionOrden, $FechaMaximaEntrega, $EstadoOrden, $EstadoProduccion]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -95,9 +99,10 @@ class orden
             $FechaEmisionOrden = $this->FechaEmisionOrden;
             $FechaMaximaEntrega = $this->FechaMaximaEntrega;
             $EstadoOrden = $this->EstadoOrden;
-            $sql = "CALL actualizarOrdenTrabajo( ?, ?, ?, ?, ?, ?);";
+            $EstadoProduccion = $this->EstadoProduccion;
+            $sql = "CALL actualizarOrdenTrabajo( ?, ?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoOrdenTrabajo, $CodigoCotizacion, $CodigoTrabajador, $FechaEmisionOrden, $FechaMaximaEntrega, $EstadoOrden]);
+            $stmt->execute([$CodigoOrdenTrabajo, $CodigoCotizacion, $CodigoTrabajador, $FechaEmisionOrden, $FechaMaximaEntrega, $EstadoOrden, $EstadoProduccion]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

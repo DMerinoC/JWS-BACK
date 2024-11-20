@@ -5,7 +5,7 @@ class conexion extends PDO
     private $host = "localhost:3306";
     private $user = "root";
     private $password = "123456";
-    private $db = "jws";
+    private $db = "jwshsv7";
     public function __construct()
     {
         $dsn = $this->tipo . ':host=' . $this->host . ';dbname=' . $this->db;

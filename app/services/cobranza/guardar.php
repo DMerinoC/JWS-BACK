@@ -2,7 +2,7 @@
 require_once '../../models/cobranza.php';
 if (
     isset(
-    $_POST["CodigoCliente"],
+    $_POST["CodigoCotizacion"],
     $_POST["FechaEmision"],
     $_POST["FechaVencimiento"],
     $_POST["Delivery"],
@@ -12,7 +12,7 @@ if (
     $_POST["EstadoCobranza"]
 )
 ) {
-    $CodigoCliente = $_POST["CodigoCliente"];
+    $CodigoCotizacion = $_POST["CodigoCotizacion"];
     $FechaEmision = $_POST["FechaEmision"];
     $FechaVencimiento = $_POST["FechaVencimiento"];
     $Delivery = $_POST["Delivery"];
@@ -21,9 +21,9 @@ if (
     $Documento = $_POST["Documento"];
     $EstadoCobranza = $_POST["EstadoCobranza"];
 
-    if (!empty($CodigoCliente) && !empty($FechaEmision) && !empty($FechaVencimiento) && !empty($Delivery) && !empty($Monto) && !empty($Moneda) && !empty($Documento) && !empty($EstadoCobranza)) {
+    if (!empty($CodigoCotizacion) && !empty($FechaEmision) && !empty($FechaVencimiento) && !empty($Delivery) && !empty($Monto) && !empty($Moneda) && !empty($Documento) && !empty($EstadoCobranza)) {
         // INSTANCIAMOS
-        $cobranza = new cobranza("", $CodigoCliente, "", $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza);
+        $cobranza = new cobranza("", $CodigoCotizacion, "", "", $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza);
         // APLICAMOS GUARDAR
         $resultado = $cobranza->GuardarCobranza();
         // MANEJAMOS RESPUESTAS

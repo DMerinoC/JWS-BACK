@@ -1,9 +1,11 @@
 <?php
 require_once '../../models/cobranza.php';
+require_once '../../models/ordenTrabajo.php';
+date_default_timezone_set('America/Lima');
 if (
     isset(
     $_POST["CodigoCobranza"],
-    $_POST["CodigoCliente"],
+    $_POST["CodigoCotizacion"],
     $_POST["FechaEmision"],
     $_POST["FechaVencimiento"],
     $_POST["Delivery"],
@@ -14,7 +16,7 @@ if (
 )
 ) {
     $CodigoCobranza = $_POST["CodigoCobranza"];
-    $CodigoCliente = $_POST["CodigoCliente"];
+    $CodigoCotizacion = $_POST["CodigoCotizacion"];
     $FechaEmision = $_POST["FechaEmision"];
     $FechaVencimiento = $_POST["FechaVencimiento"];
     $Delivery = $_POST["Delivery"];
@@ -22,10 +24,35 @@ if (
     $Moneda = $_POST["Moneda"];
     $Documento = $_POST["Documento"];
     $EstadoCobranza = $_POST["EstadoCobranza"];
+    $CodigoTrabajador = $_POST["CodigoTrabajador"];
 
-    if (!empty($CodigoCobranza) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($FechaVencimiento) && !empty($Delivery) && !empty($Monto) && !empty($Moneda) && !empty($Documento) && !empty($EstadoCobranza)) {
+    if ($EstadoCobranza == "Pagado" || $EstadoCobranza == "Pago Parcial") {
+        $orden = new orden(
+            "",
+            $CodigoCotizacion,
+            $CodigoTrabajador,
+            "",
+            "",
+            date('Y-m-d H:i:s', time()),
+            date(
+                'Y-m-d H:i:s',
+                strtotime(
+                    '+2 months',
+                    strtotime(date(
+                        'Y-m-d H:i:s',
+                        time()
+                    ))
+                )
+            ),
+            "Inicial",
+            "Inicial"
+        );
+        $agregado = $orden->GuardarOrden();
+    }
+
+    if (!empty($CodigoCobranza) && !empty($CodigoCotizacion) && !empty($FechaEmision) && !empty($FechaVencimiento) && !empty($Delivery) && !empty($Monto) && !empty($Moneda) && !empty($Documento) && !empty($EstadoCobranza)) {
         // INSTANCIAMOS
-        $cobranza = new cobranza($CodigoCobranza, $CodigoCliente, "", $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza);
+        $cobranza = new cobranza($CodigoCobranza, $CodigoCotizacion, "", "", $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza);
         // APLICAMOS GUARDAR
         $resultado = $cobranza->ActualizarCobranza();
         // MANEJAMOS RESPUESTAS

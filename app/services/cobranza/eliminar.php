@@ -5,7 +5,7 @@ if (isset($_POST["CodigoCobranza"])) {
 
     if (!empty($CodigoCobranza)) {
         // INSTANCIAMOS
-        $cobranza = new cobranza($CodigoCobranza, "", "", "", "", "", "", "", "", "");
+        $cobranza = new cobranza($CodigoCobranza, "", "", "", "", "", "", "", "", "", "");
         // APLICAMOS GUARDAR
         $resultado = $cobranza->EliminarCobranza();
         // MANEJAMOS RESPUESTAS

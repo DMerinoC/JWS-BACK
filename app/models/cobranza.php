@@ -3,6 +3,7 @@ require_once '../../config/conexion.php';
 class cobranza
 {
     public $CodigoCobranza;
+    public $CodigoCotizacion;
     public $CodigoCliente;
     public $NombreCliente;
     public $FechaEmision;
@@ -14,9 +15,10 @@ class cobranza
     public $EstadoCobranza;
     private $conexion;
 
-    function __construct($CodigoCobranza, $CodigoCliente, $NombreCliente, $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza, $iniciarBD = true)
+    function __construct($CodigoCobranza, $CodigoCotizacion, $CodigoCliente, $NombreCliente, $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza, $iniciarBD = true)
     {
         $this->CodigoCobranza = $CodigoCobranza;
+        $this->CodigoCotizacion = $CodigoCotizacion;
         $this->CodigoCliente = $CodigoCliente;
         $this->NombreCliente = $NombreCliente;
         $this->FechaEmision = $FechaEmision;
@@ -40,6 +42,7 @@ class cobranza
         while ($datos = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $cobranza = new cobranza(
                 $datos["idcobranza"],
+                $datos["idcotizacion"],
                 $datos["idcliente"],
                 $datos["nombre_cliente"],
                 $datos["fecha_emision"],
@@ -58,7 +61,7 @@ class cobranza
     public function GuardarCobranza()
     {
         try {
-            $CodigoCliente = $this->CodigoCliente;
+            $CodigoCotizacion = $this->CodigoCotizacion;
             $FechaEmision = $this->FechaEmision;
             $FechaVencimiento = $this->FechaVencimiento;
             $Delivery = $this->Delivery;
@@ -68,7 +71,7 @@ class cobranza
             $EstadoCobranza = $this->EstadoCobranza;
             $sql = "CALL crearCobranza(?, ?, ?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCliente, $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza]);
+            $stmt->execute([$CodigoCotizacion, $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza]);
             $results = [];
             do {
                 $results[] = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -99,7 +102,7 @@ class cobranza
     {
         try {
             $CodigoCobranza = $this->CodigoCobranza;
-            $CodigoCliente = $this->CodigoCliente;
+            $CodigoCotizacion = $this->CodigoCotizacion;
             $FechaEmision = $this->FechaEmision;
             $FechaVencimiento = $this->FechaVencimiento;
             $Delivery = $this->Delivery;
@@ -109,7 +112,7 @@ class cobranza
             $EstadoCobranza = $this->EstadoCobranza;
             $sql = "CALL actualizarCobranza( ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute([$CodigoCobranza, $CodigoCliente, $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza]);
+            $stmt->execute([$CodigoCobranza, $CodigoCotizacion, $FechaEmision, $FechaVencimiento, $Delivery, $Monto, $Moneda, $Documento, $EstadoCobranza]);
             $resultados = [];
             do {
                 $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);

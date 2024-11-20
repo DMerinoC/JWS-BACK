@@ -103,4 +103,28 @@ class cliente
             return false;
         }
     }
+    public static function ListarHistorial($idcliente)
+    {
+        $listarHistorial = [];
+        $conexion = new conexion();
+        $sql = "CALL listarHistorialCotizacion(:idcliente);";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':idcliente', $idcliente, PDO::PARAM_INT);
+        $stmt->execute();
+
+        while ($datos = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            // Crear un objeto stdClass para almacenar los datos
+            $historial = new stdClass();
+            $historial->CodigoCliente = $datos["idcliente"];
+            $historial->CodigoCotizacion = $datos["idcotizacion"];
+            $historial->FechaEmision = $datos["fecha_emision"];
+            $historial->Cantidad = $datos["cantidad"];
+
+            // Agregar el objeto stdClass al array
+            array_push($listarHistorial, $historial);
+        }
+
+        return $listarHistorial;
+    }
+
 }

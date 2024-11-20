@@ -5,7 +5,7 @@ if (isset($_POST["CodigoOrdenTrabajo"])) {
     $CodigoOrdenTrabajo = $_POST["CodigoOrdenTrabajo"];
 
     if (!empty($CodigoOrdenTrabajo)) {
-        $orden = new orden($CodigoOrdenTrabajo, "", "", "", "", "", "", "");
+        $orden = new orden($CodigoOrdenTrabajo, "", "", "", "", "", "", "", "");
         $resultado = $orden->EliminarOrden();
         if (is_array($resultado) && count($resultado) > 0 && isset($resultado[0]['mensaje']) && $resultado[0]['mensaje'] == 'La orden de trabajo no existe') {
             echo json_encode(['mensaje' => 'La orden de trabajo no existe']);

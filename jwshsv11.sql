@@ -78,7 +78,7 @@ DROP TABLE IF EXISTS `cobranza`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cobranza` (
   `idcobranza` int NOT NULL AUTO_INCREMENT,
-  `idcliente` int DEFAULT NULL,
+  `idcotizacion` int DEFAULT NULL,
   `fecha_emision` timestamp NULL DEFAULT NULL,
   `fecha_vencimiento` timestamp NULL DEFAULT NULL,
   `delivery` decimal(10,2) DEFAULT NULL,
@@ -87,9 +87,9 @@ CREATE TABLE `cobranza` (
   `documento` varchar(45) DEFAULT NULL,
   `estado_cobranza` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`idcobranza`),
-  KEY `idcliente` (`idcliente`),
-  CONSTRAINT `cobranza_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `cobranza_ibfk_1_idx` (`idcotizacion`),
+  CONSTRAINT `cobranza_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,6 +98,7 @@ CREATE TABLE `cobranza` (
 
 LOCK TABLES `cobranza` WRITE;
 /*!40000 ALTER TABLE `cobranza` DISABLE KEYS */;
+INSERT INTO `cobranza` VALUES (2,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',0.00,30.00,'Soles','Listo','Pagado'),(3,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado'),(4,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado'),(5,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado');
 /*!40000 ALTER TABLE `cobranza` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,12 +237,13 @@ CREATE TABLE `ordentrabajo` (
   `fecha_emision` timestamp NULL DEFAULT NULL,
   `fecha_maxima_entrega` timestamp NULL DEFAULT NULL,
   `estado_orden` varchar(225) DEFAULT NULL,
+  `estado_produccion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idordentrabajo`),
   KEY `idcotizacion` (`idcotizacion`),
   KEY `idtrabajador` (`idtrabajador`),
   CONSTRAINT `ordentrabajo_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`),
   CONSTRAINT `ordentrabajo_ibfk_2` FOREIGN KEY (`idtrabajador`) REFERENCES `trabajador` (`idtrabajador`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,7 +252,7 @@ CREATE TABLE `ordentrabajo` (
 
 LOCK TABLES `ordentrabajo` WRITE;
 /*!40000 ALTER TABLE `ordentrabajo` DISABLE KEYS */;
-INSERT INTO `ordentrabajo` VALUES (2,2,2,'2024-02-02 05:00:00','2024-05-12 05:00:00','En pausa'),(4,4,3,'2024-11-03 21:42:02','2025-01-03 21:42:02','Inicial');
+INSERT INTO `ordentrabajo` VALUES (2,2,2,'2024-02-02 05:00:00','2024-05-12 05:00:00','En pausa',NULL),(4,4,3,'2024-11-03 21:42:02','2025-01-03 21:42:02','Inicial',NULL),(5,2,3,'2024-02-02 05:00:00','2024-05-12 05:00:00','Terminado','Activado');
 /*!40000 ALTER TABLE `ordentrabajo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -480,7 +482,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarCobranza`(
 	_idcobranza INT,
-    _idcliente INT,
+    _idcotizacion INT,
     _fecha_emision TIMESTAMP,
     _fecha_vencimiento TIMESTAMP,
     _delivery DECIMAL(10,2),
@@ -494,7 +496,7 @@ BEGIN
         BEGIN
             UPDATE cobranza 
             SET 
-                idcliente=_idcliente,
+                idcotizacion=_idcotizacion,
                 fecha_emision=_fecha_emision,
                 fecha_vencimiento=_fecha_vencimiento,
                 delivery=_delivery,
@@ -548,7 +550,7 @@ BEGIN
 				INNER JOIN detallecotizacion AS DC2 ON P2.idproducto = DC2.idproducto
 				INNER JOIN cotizacion AS C2 ON DC2.idcotizacion = C2.idcotizacion
 				WHERE
-					C2.estado = 'Activo'
+					C2.estado = 'Aprobado'
 					AND C2.idcotizacion = _idcotizacion
 				GROUP BY 
 					MP2.idmateriaprima
@@ -556,7 +558,7 @@ BEGIN
 			SET 
 				MP.cantidad_materia = MP.cantidad_materia - sumas.suma_cantidadmateria
 			WHERE
-				C.estado = 'Activo'
+				C.estado = 'Aprobado'
 				AND C.idcotizacion = _idcotizacion;
 
 			UPDATE cotizacion 
@@ -716,7 +718,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarOrdenTrabajo`(
 	_idtrabajador INT,
 	_fecha_emision TIMESTAMP,
 	_fecha_maxima_entrega TIMESTAMP,
-	_estado_orden VARCHAR(225)
+	_estado_orden VARCHAR(225),
+    _estado_produccion VARCHAR(45)
 	)
 BEGIN
 		START TRANSACTION;
@@ -727,7 +730,8 @@ BEGIN
 				idtrabajador = _idtrabajador,
 				fecha_emision = _fecha_emision,
 				fecha_maxima_entrega = _fecha_maxima_entrega,
-				estado_orden = _estado_orden
+				estado_orden = _estado_orden,
+                estado_produccion = _estado_produccion
 			WHERE idordentrabajo = _idordentrabajo;
 			SELECT 'Orden de Trabajo actualizada correctamente' AS mensaje;
         END;
@@ -987,7 +991,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crearCobranza`(
-    _idcliente INT,
+    _idcotizacion INT,
     _fecha_emision TIMESTAMP,
     _fecha_vencimiento TIMESTAMP,
     _delivery DECIMAL(10,2),
@@ -999,8 +1003,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `crearCobranza`(
 BEGIN
 		START TRANSACTION;
         BEGIN
-                INSERT INTO cobranza (idcliente,fecha_emision,fecha_vencimiento ,delivery,monto ,moneda,documento,estado_cobranza) 
-                VALUES (_idcliente,_fecha_emision,_fecha_vencimiento ,_delivery,_monto ,_moneda,_documento,_estado_cobranza);
+                INSERT INTO cobranza (idcotizacion,fecha_emision,fecha_vencimiento ,delivery,monto ,moneda,documento,estado_cobranza) 
+                VALUES (_idcotizacion,_fecha_emision,_fecha_vencimiento ,_delivery,_monto ,_moneda,_documento,_estado_cobranza);
                 SELECT 'Cobranza insertada correctamente' AS mensaje;
         END;
         COMMIT;
@@ -1153,11 +1157,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `crearOrdenTrabajo`(
 	_idtrabajador INT,
 	_fecha_emision TIMESTAMP,
 	_fecha_maxima_entrega TIMESTAMP,
-	_estado_orden VARCHAR(225)
+	_estado_orden VARCHAR(225),
+    _estado_produccion VARCHAR(225)
 	)
 BEGIN
-	INSERT INTO ordentrabajo (idcotizacion, idtrabajador, fecha_emision, fecha_maxima_entrega, estado_orden) 
-	VALUES (_idcotizacion, _idtrabajador, _fecha_emision, _fecha_maxima_entrega, _estado_orden);
+	INSERT INTO ordentrabajo (idcotizacion, idtrabajador, fecha_emision, fecha_maxima_entrega, estado_orden, estado_produccion)
+	VALUES (_idcotizacion, _idtrabajador, _fecha_emision, _fecha_maxima_entrega, _estado_orden, _estado_produccion);
 	SELECT 'Orden de trabajo insertada correctamente' AS mensaje;
 END ;;
 DELIMITER ;
@@ -1733,21 +1738,24 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `listarcobranza`()
 BEGIN
-SELECT 
+SELECT
     idcobranza,
-    CO.idcliente,
+    CO.idcotizacion,
+    C.idcliente,
     CL.nombre_cliente,
-    fecha_emision,
+    CO.fecha_emision,
     fecha_vencimiento,
     delivery,
     monto,
     moneda,
     documento,
-    estado_cobranza    
+    estado_cobranza
 FROM
     cobranza AS CO
         INNER JOIN
-    cliente AS CL ON CO.idcliente = CL.idcliente;
+    cotizacion AS C ON CO.idcotizacion = C.idcotizacion
+        INNER JOIN
+    cliente AS CL ON C.idcliente = CL.idcliente;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1849,6 +1857,29 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `listarHistorialCotizacion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `listarHistorialCotizacion`(_idcliente INT)
+BEGIN
+select cot.idcliente, cot.idcotizacion, cot.fecha_emision, count(iddetallecotizacion) as 'cantidad'
+from cotizacion cot inner join detallecotizacion det 
+on cot.idcotizacion = det.idcotizacion
+where cot.idcliente = _idcliente
+group by cot.idcotizacion;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `listarMateriaPrima` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1900,7 +1931,8 @@ SELECT
     T.sueldo_trabajador,
     OT.fecha_emision,
     OT.fecha_maxima_entrega,
-    OT.estado_orden
+    OT.estado_orden,
+    OT.estado_produccion
 FROM
     ordentrabajo AS OT
         INNER JOIN
@@ -2086,4 +2118,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-05  1:17:51
+-- Dump completed on 2024-11-20  0:10:42

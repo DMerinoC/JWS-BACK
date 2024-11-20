@@ -1,31 +1,46 @@
 <?php
 require_once '../../models/cotizacion.php';
-require_once '../../models/ordenTrabajo.php';
+require_once '../../models/cobranza.php';
 date_default_timezone_set('America/Lima');
 if (isset($_POST["CodigoCotizacion"], $_POST["CodigoCliente"], $_POST["FechaEmision"], $_POST["Estado"])) {
     $CodigoCotizacion = $_POST["CodigoCotizacion"];
     $CodigoCliente = $_POST["CodigoCliente"];
     $FechaEmision = $_POST["FechaEmision"];
     $Estado = $_POST["Estado"];
-    $CodigoTrabajador = $_POST["CodigoTrabajador"];
+
+    $Delivery = $_POST["Delivery"];
+    $Monto = $_POST["Monto"];
+    $Moneda = $_POST["Moneda"];
+    $EstadoCobranza = $_POST["EstadoCobranza"];
 
     if ($Estado == "Aprobado") {
-        $orden = new orden(
+        $cobranza = new cobranza(
             "",
             $CodigoCotizacion,
-            $CodigoTrabajador,
-            "",
+            $CodigoCliente,
             "",
             date('Y-m-d H:i:s', time()),
             date('Y-m-d H:i:s', strtotime('+2 months', strtotime(date('Y-m-d H:i:s', time())))),
-            "Inicial"
+            $Delivery, //input normal
+            $Monto, // lo mandas
+            $Moneda, // soles dolares
+            "", // no sé
+            $EstadoCobranza // Pago Pendiente Pago Parcial Pagado
         );
-        $agregado = $orden->GuardarOrden();
+        $agregado = $cobranza->GuardarCobranza();
     }
 
     if (!empty($CodigoCotizacion) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado)) {
         // INSTANCIAMOS
-        $cotizacion = new cotizacion($CodigoCotizacion, $CodigoCliente, "", "", "", $FechaEmision, $Estado);
+        $cotizacion = new cotizacion(
+            $CodigoCotizacion,
+            $CodigoCliente,
+            "",
+            "",
+            "",
+            $FechaEmision,
+            $Estado
+        );
         // APLICAMOS GUARDAR
         $resultado = $cotizacion->ActualizarCotizacion();
         // MANEJAMOS RESPUESTAS
