@@ -9,7 +9,7 @@ if (!isset($_GET['idcotizacion']) || empty($_GET['idcotizacion'])) {
     exit;
 }
 
-$idCotizacion = intval($GET['idcotizacion']);
+$idCotizacion = intval($_GET['idcotizacion']);
 
 // Cargar datos de la API
 $data = json_decode(file_get_contents("http://localhost/app/services/detalle/listar.php?idcotizacion=$idCotizacion"), true);
