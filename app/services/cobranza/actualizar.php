@@ -24,9 +24,14 @@ if (
     $Moneda = $_POST["Moneda"];
     $Documento = $_POST["Documento"];
     $EstadoCobranza = $_POST["EstadoCobranza"];
-    $CodigoTrabajador = $_POST["CodigoTrabajador"];
+    
 
     if ($EstadoCobranza == "Pagado" || $EstadoCobranza == "Pago Parcial") {
+        $CodigoTrabajador = $_POST["CodigoTrabajador"];
+        if(empty($CodigoTrabajador)){
+            echo json_encode(['mensaje' => 'Rellene los campos vacios']);
+            return;
+        }
         $orden = new orden(
             "",
             $CodigoCotizacion,
