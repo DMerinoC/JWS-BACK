@@ -8,12 +8,17 @@ if (isset($_POST["CodigoCotizacion"], $_POST["CodigoCliente"], $_POST["FechaEmis
     $FechaEmision = $_POST["FechaEmision"];
     $Estado = $_POST["Estado"];
 
-    $Delivery = $_POST["Delivery"];
-    $Monto = $_POST["Monto"];
-    $Moneda = $_POST["Moneda"];
-    $EstadoCobranza = $_POST["EstadoCobranza"];
-
     if ($Estado == "Aprobado") {
+        $Delivery = $_POST["Delivery"];
+        $Monto = $_POST["Monto"];
+        $Moneda = $_POST["Moneda"];
+        $EstadoCobranza = $_POST["EstadoCobranza"];
+
+        if (empty($Monto) || empty($Moneda) || empty($EstadoCobranza)) {
+            echo json_encode(['mensaje' => 'Rellene los campos vacios']);
+            return;
+        }
+
         $cobranza = new cobranza(
             "",
             $CodigoCotizacion,
@@ -30,7 +35,7 @@ if (isset($_POST["CodigoCotizacion"], $_POST["CodigoCliente"], $_POST["FechaEmis
         $agregado = $cobranza->GuardarCobranza();
     }
 
-    if (!empty($CodigoCotizacion) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado)) {
+    if (!empty($CodigoCotizacion) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado) ) {
         // INSTANCIAMOS
         $cotizacion = new cotizacion(
             $CodigoCotizacion,
