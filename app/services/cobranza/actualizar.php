@@ -50,7 +50,7 @@ if (
                 )
             ),
             "Inicial",
-            "Inicial"
+            "0"
         );
         $agregado = $orden->GuardarOrden();
     }

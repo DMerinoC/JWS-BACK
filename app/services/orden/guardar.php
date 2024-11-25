@@ -1,7 +1,7 @@
 <?php
 require_once '../../models/ordenTrabajo.php';
 
-if (isset($_POST["CodigoCotizacion"], $_POST["CodigoTrabajador"], $_POST["FechaEmisionOrden"], $_POST["FechaMaximaEntrega"], $_POST["EstadoOrden"], $_POST["EstadoProduccion"])) {
+if (isset($_POST["CodigoCotizacion"], $_POST["CodigoTrabajador"], $_POST["FechaEmisionOrden"], $_POST["FechaMaximaEntrega"], $_POST["EstadoOrden"])) {
     $CodigoCotizacion = $_POST["CodigoCotizacion"];
     $CodigoTrabajador = $_POST["CodigoTrabajador"];
     $FechaEmisionOrden = $_POST["FechaEmisionOrden"];
@@ -9,7 +9,7 @@ if (isset($_POST["CodigoCotizacion"], $_POST["CodigoTrabajador"], $_POST["FechaE
     $EstadoOrden = $_POST["EstadoOrden"];
     $EstadoProduccion = $_POST["EstadoProduccion"];
 
-    if (!empty($CodigoCotizacion) && !empty($CodigoTrabajador) && !empty($FechaEmisionOrden) && !empty($FechaMaximaEntrega) && !empty($EstadoOrden)&& !empty($EstadoProduccion)) {
+    if (!empty($CodigoCotizacion) && !empty($CodigoTrabajador) && !empty($FechaEmisionOrden) && !empty($FechaMaximaEntrega) && !empty($EstadoOrden)) {
         $orden = new orden("", $CodigoCotizacion, $CodigoTrabajador, "", "", $FechaEmisionOrden, $FechaMaximaEntrega, $EstadoOrden, $EstadoProduccion);
         $resultado = $orden->GuardarOrden();
         if (is_array($resultado) && count($resultado) > 0 && isset($resultado[0]['mensaje']) && $resultado[0]['mensaje'] == 'Orden de trabajo insertada correctamente') {
