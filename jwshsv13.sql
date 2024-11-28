@@ -89,7 +89,7 @@ CREATE TABLE `cobranza` (
   PRIMARY KEY (`idcobranza`),
   KEY `cobranza_ibfk_1_idx` (`idcotizacion`),
   CONSTRAINT `cobranza_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +98,7 @@ CREATE TABLE `cobranza` (
 
 LOCK TABLES `cobranza` WRITE;
 /*!40000 ALTER TABLE `cobranza` DISABLE KEYS */;
-INSERT INTO `cobranza` VALUES (2,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',0.00,30.00,'Soles','Listo','Pagado'),(3,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado'),(4,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado'),(5,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado');
+INSERT INTO `cobranza` VALUES (2,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',0.00,30.00,'Soles','Listo','Pagado'),(3,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado'),(4,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado'),(5,2,'2024-10-02 05:00:00','2024-10-22 05:00:00',1.00,3000.00,'Soles','Oficial','Pagado'),(6,25,'2024-11-28 05:48:52','2025-01-28 05:48:52',0.00,741.04,'PEN','','Pendiente'),(7,26,'2024-11-28 05:54:09','2025-01-28 05:54:09',0.00,3705.20,'PEN','','Pendiente'),(8,27,'2024-11-28 05:59:01','2025-01-28 05:59:01',0.00,0.00,'PEN','','Pendiente'),(9,28,'2024-11-28 05:59:48','2025-01-28 05:59:48',0.00,370.52,'PEN','','Pendiente'),(10,29,'2024-11-28 06:06:27','2025-01-28 06:06:27',0.00,3705.20,'PEN','','Pendiente');
 /*!40000 ALTER TABLE `cobranza` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +117,7 @@ CREATE TABLE `cotizacion` (
   PRIMARY KEY (`idcotizacion`),
   KEY `idcliente` (`idcliente`),
   CONSTRAINT `cotizacion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `cotizacion` (
 
 LOCK TABLES `cotizacion` WRITE;
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
-INSERT INTO `cotizacion` VALUES (1,1,'2024-10-02 05:00:00','Activado'),(2,2,'2024-11-02 05:00:00','Desactivado'),(4,1,'2024-10-12 05:00:00','Aprobado'),(13,4,'2024-11-03 22:24:54','Activo'),(14,4,'2024-11-05 03:14:27','Activo'),(15,4,'2024-11-05 03:15:05','Activo'),(16,4,'2024-11-05 03:29:13','Activo'),(17,4,'2024-11-05 03:29:48','Activo'),(18,4,'2024-11-05 03:29:50','desocupado'),(19,4,'2024-11-05 03:41:56','Activo'),(20,4,'2024-11-05 03:42:22','Activo'),(21,4,'2024-11-05 03:42:52','Activo'),(22,4,'2024-11-05 03:43:47','Activo'),(23,4,'2024-11-05 03:44:01','Activo'),(24,4,'2024-11-05 03:44:19','Activo');
+INSERT INTO `cotizacion` VALUES (1,1,'2024-10-02 05:00:00','Activado'),(2,2,'2024-11-02 05:00:00','Desactivado'),(4,1,'2024-10-12 05:00:00','Aprobado'),(13,4,'2024-11-03 22:24:54','Activo'),(14,4,'2024-11-05 03:14:27','Activo'),(15,4,'2024-11-05 03:15:05','Activo'),(16,4,'2024-11-05 03:29:13','Activo'),(17,4,'2024-11-05 03:29:48','Activo'),(18,4,'2024-11-05 03:29:50','desocupado'),(19,4,'2024-11-05 03:41:56','Activo'),(20,4,'2024-11-05 03:42:22','Activo'),(21,4,'2024-11-05 03:42:52','Activo'),(22,4,'2024-11-05 03:43:47','Activo'),(23,4,'2024-11-05 03:44:01','Activo'),(24,4,'2024-11-05 03:44:19','Activo'),(25,1,'2024-11-28 05:00:00','Aprobado'),(26,2,'2024-11-28 05:00:00','Aprobado'),(27,4,'2024-11-28 05:00:00','Aprobado'),(28,4,'2024-11-28 05:00:00','Aprobado'),(29,4,'2024-11-28 05:00:00','Aprobado');
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `detallecotizacion` (
   KEY `idproducto` (`idproducto`),
   CONSTRAINT `detallecotizacion_ibfk_1` FOREIGN KEY (`idcotizacion`) REFERENCES `cotizacion` (`idcotizacion`),
   CONSTRAINT `detallecotizacion_ibfk_2` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +158,7 @@ CREATE TABLE `detallecotizacion` (
 
 LOCK TABLES `detallecotizacion` WRITE;
 /*!40000 ALTER TABLE `detallecotizacion` DISABLE KEYS */;
-INSERT INTO `detallecotizacion` VALUES (1,1,2,3,224.00,'Sin problemas'),(2,1,1,2,222.00,'Sin problemas'),(4,13,5,2,222.00,'Sin problemas'),(5,13,1,2,222.00,'Sin problemas'),(6,13,2,2,222.00,'Sin problemas');
+INSERT INTO `detallecotizacion` VALUES (1,1,2,3,224.00,'Sin problemas'),(2,1,1,2,222.00,'Sin problemas'),(4,13,5,2,222.00,'Sin problemas'),(5,13,1,2,222.00,'Sin problemas'),(6,13,2,2,222.00,'Sin problemas'),(7,25,7,2,628.00,'asd'),(8,26,7,10,3140.00,'kj'),(9,28,7,1,314.00,'fgre'),(10,29,7,10,3140.00,'asd');
 /*!40000 ALTER TABLE `detallecotizacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,7 +219,7 @@ CREATE TABLE `materiaprima` (
 
 LOCK TABLES `materiaprima` WRITE;
 /*!40000 ALTER TABLE `materiaprima` DISABLE KEYS */;
-INSERT INTO `materiaprima` VALUES (1,1,'Materia Prima 1',150.00,538,'kg','Materia de origen nacional','Para camas'),(3,4,'Materia Prima 2',1000.00,88,'Und.','Materia de origen Internacional','Para todo uso'),(4,5,'Materia Prima 4',150.00,153,'Und.','Materia de origen Internacional','Para todo uso'),(5,5,'Materia Prima 5',100.00,153,'Und.','Materia de origen Nacional','Para todo uso');
+INSERT INTO `materiaprima` VALUES (1,1,'Materia Prima 1',150.00,280,'kg','Materia de origen nacional','Para camas'),(3,4,'Materia Prima 2',1000.00,600,'Und.','Materia de origen Internacional','Para todo uso'),(4,5,'Materia Prima 4',150.00,800,'Und.','Materia de origen Internacional','Para todo uso'),(5,5,'Materia Prima 5',100.00,153,'Und.','Materia de origen Nacional','Para todo uso');
 /*!40000 ALTER TABLE `materiaprima` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +329,7 @@ CREATE TABLE `receta` (
   KEY `idmateriaprima` (`idmateriaprima`),
   CONSTRAINT `receta_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
   CONSTRAINT `receta_ibfk_2` FOREIGN KEY (`idmateriaprima`) REFERENCES `materiaprima` (`idmateriaprima`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -338,7 +338,7 @@ CREATE TABLE `receta` (
 
 LOCK TABLES `receta` WRITE;
 /*!40000 ALTER TABLE `receta` DISABLE KEYS */;
-INSERT INTO `receta` VALUES (1,3,20,20.00,8),(1,1,20,20.00,9),(2,1,2,300.00,18),(2,4,2,200.00,19),(2,3,2,2000.00,20),(5,5,2,200.00,21),(5,4,1,100.00,22);
+INSERT INTO `receta` VALUES (1,3,20,20.00,8),(1,1,20,20.00,9),(2,1,2,300.00,18),(2,4,2,200.00,19),(2,3,2,2000.00,20),(5,5,2,200.00,21),(5,4,1,100.00,22),(7,1,10,1500.00,23),(7,4,10,1500.00,24),(7,3,10,10000.00,25);
 /*!40000 ALTER TABLE `receta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -533,34 +533,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarCotizacion`(
 BEGIN
     START TRANSACTION;
         BEGIN
-			UPDATE materiaprima AS MP
-			INNER JOIN receta AS R ON MP.idmateriaprima = R.idmateriaprima
-			INNER JOIN producto AS P ON R.idproducto = P.idproducto
-			INNER JOIN detallecotizacion AS DC ON P.idproducto = DC.idproducto
-			INNER JOIN cotizacion AS C ON DC.idcotizacion = C.idcotizacion
-			LEFT JOIN (
-				SELECT 
-					MP2.idmateriaprima, 
-					SUM(MP2.cantidad_materia) AS suma_cantidad_materia,
-					SUM(R2.cantidadmateria) AS suma_cantidadmateria
-				FROM
-					materiaprima AS MP2
-				INNER JOIN receta AS R2 ON MP2.idmateriaprima = R2.idmateriaprima
-				INNER JOIN producto AS P2 ON R2.idproducto = P2.idproducto
-				INNER JOIN detallecotizacion AS DC2 ON P2.idproducto = DC2.idproducto
-				INNER JOIN cotizacion AS C2 ON DC2.idcotizacion = C2.idcotizacion
-				WHERE
-					C2.estado = 'Aprobado'
-					AND C2.idcotizacion = _idcotizacion
-				GROUP BY 
-					MP2.idmateriaprima
-			) AS sumas ON MP.idmateriaprima = sumas.idmateriaprima
-			SET 
-				MP.cantidad_materia = MP.cantidad_materia - sumas.suma_cantidadmateria
-			WHERE
-				C.estado = 'Aprobado'
-				AND C.idcotizacion = _idcotizacion;
-
 			UPDATE cotizacion 
 			SET
             idcliente = _idcliente,
@@ -2080,6 +2052,57 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `restarMaterias` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `restarMaterias`(
+    _idcotizacion INT
+    )
+BEGIN
+			UPDATE materiaprima AS MP
+			INNER JOIN receta AS R ON MP.idmateriaprima = R.idmateriaprima
+			INNER JOIN producto AS P ON R.idproducto = P.idproducto
+			INNER JOIN detallecotizacion AS DC ON P.idproducto = DC.idproducto
+			INNER JOIN cotizacion AS C ON DC.idcotizacion = C.idcotizacion
+			LEFT JOIN (
+				SELECT 
+					MP2.idmateriaprima,
+					SUM(MP2.cantidad_materia) AS suma_cantidad_materia,
+					SUM(R2.cantidadmateria*DC2.cantidad) AS suma_cantidadmateria
+						FROM
+							materiaprima AS MP2
+						INNER JOIN
+							receta AS R2 ON MP2.idmateriaprima = R2.idmateriaprima
+						INNER JOIN
+							producto AS P2 ON R2.idproducto = P2.idproducto
+						INNER JOIN
+							detallecotizacion AS DC2 ON P2.idproducto = DC2.idproducto
+						INNER JOIN
+							cotizacion AS C2 ON DC2.idcotizacion = C2.idcotizacion
+						WHERE
+							C2.estado = 'Aprobado'
+						AND C2.idcotizacion = _idcotizacion
+						GROUP BY MP2.idmateriaprima
+				) AS sumas ON MP.idmateriaprima = sumas.idmateriaprima
+			SET 
+				MP.cantidad_materia = MP.cantidad_materia - sumas.suma_cantidadmateria
+			WHERE
+				C.estado = 'Aprobado'
+				AND C.idcotizacion = _idcotizacion;
+			SELECT 'Resta Exitosa' AS mensaje;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ValidarUsuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2118,4 +2141,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-24  0:50:01
+-- Dump completed on 2024-11-28  1:07:56

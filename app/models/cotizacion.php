@@ -101,4 +101,21 @@ class cotizacion
             return false;
         }
     }
+    public function restarMateria()
+    {
+        try {
+            $CodigoCotizacion = $this->CodigoCotizacion;
+            $sql = "CALL restarMaterias(?);";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute([$CodigoCotizacion]);
+            $resultados = [];
+            do {
+                $resultados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+            } while ($stmt->nextRowset());
+
+            return $resultados;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }

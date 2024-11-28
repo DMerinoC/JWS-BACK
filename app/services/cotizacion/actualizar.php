@@ -35,7 +35,7 @@ if (isset($_POST["CodigoCotizacion"], $_POST["CodigoCliente"], $_POST["FechaEmis
         $agregado = $cobranza->GuardarCobranza();
     }
 
-    if (!empty($CodigoCotizacion) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado) ) {
+    if (!empty($CodigoCotizacion) && !empty($CodigoCliente) && !empty($FechaEmision) && !empty($Estado)) {
         // INSTANCIAMOS
         $cotizacion = new cotizacion(
             $CodigoCotizacion,
@@ -48,6 +48,7 @@ if (isset($_POST["CodigoCotizacion"], $_POST["CodigoCliente"], $_POST["FechaEmis
         );
         // APLICAMOS GUARDAR
         $resultado = $cotizacion->ActualizarCotizacion();
+        $resultado_resta = $cotizacion->restarMateria();
         // MANEJAMOS RESPUESTAS
         if (is_array($resultado) && count($resultado) > 0 && isset($resultado[0]['mensaje']) && $resultado[0]['mensaje'] == 'La cotizacion no existe') {
             echo json_encode(['mensaje' => 'La cotizacion no existe']);
